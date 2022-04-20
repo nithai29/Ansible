@@ -4,7 +4,7 @@
   become: true
   vars:
     myuser: "devops"
-    mypassword: "Passw0rd"
+    mypassword: "P@ssw0rd"
   tasks:
   # name - Defines the username that is present or to create
   # groups - Adds users in secondary groups or use groups
@@ -21,7 +21,7 @@
       name: "{{ myuser }}"
       comment: devops
       uid: 2000
-      group: sudo
+      group: wheel
       shell: /bin/bash
         
 - name: create password
