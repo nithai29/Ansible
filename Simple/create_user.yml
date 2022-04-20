@@ -1,23 +1,37 @@
 ---
-- hosts: all
-  name: Creating a user
-  tasks: 
-
+- name: User Creation
+  hosts: all
+  become: true
+  vars:
+    myuser: "devops"
+    mypassword: "Passw0rd"
+  tasks:
   # name - Defines the username that is present or to create
-	# groups - Adds users in secondary groups or use groups
-	# state: present - Creates a user or works with a user
-	# state: absent - Deletes a user
-	# shell - Specifies shell-type a user can work on
-	# home - Sets a user’s home directory (default=yes)
-	# createhome: yes - Create a home directory for a user (default=yes)
-	# createhome: no - Do not create a home directory for a user
+  # groups - Adds users in secondary groups or use groups
+  # state: present - Creates a user or works with a user
+  # state: absent - Deletes a user
+  # shell - Specifies shell-type a user can work on
+  # home - Sets a user’s home directory (default=yes)
+  # createhome: yes - Create a home directory for a user (default=yes)
+  # createhome: no - Do not create a home directory for a user
 
-  # Creating a user "devopsuser"
-    - name: Creating a new user "devopsuser" and adding it to group sudo.
-      ansible.builtin.user:
-        name: "devopsuser"
-        comment: devopsuser
-        uid: 2000
-        group: sudo
-        shell: /bin/bash
+  # Creating a user "devops"
+  - name: Creating a new user "devops" and adding it to group sudo.
+    ansible.builtin.user:
+      name: "{{ myuser }}"
+      comment: devops
+      uid: 2000
+      group: sudo
+      shell: /bin/bash
         
+- name: create password
+  ansible.builtin.user:
+    name: {{" myuser "}}
+    state: present
+    password: "{{ mypassword | password_hash('512') }}"
+
+#- name: add user to sudoers file
+
+#- name: deploy ssh keys
+
+#- name: disable password authentication 
