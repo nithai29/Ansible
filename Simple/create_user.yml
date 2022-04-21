@@ -1,10 +1,10 @@
 ---
-- name: User Creation
+- name: User Creation and changing password
   hosts: all
   become: true
   vars:
     myuser: "devops"
-    mypassword: "P@ssw0rd"
+    mypassword: "devops"
   tasks:
   # name - Defines the username that is present or to create
   # groups - Adds users in secondary groups or use groups
@@ -24,14 +24,8 @@
       group: wheel
       shell: /bin/bash
         
-- name: create password
-  ansible.builtin.user:
-    name: {{" myuser "}}
-    state: present
-    password: "{{ mypassword | password_hash('512') }}"
-
-#- name: add user to sudoers file
-
-#- name: deploy ssh keys
-
-#- name: disable password authentication 
+   - name: create password
+     ansible.builtin.user:
+       name: {{" myuser "}}
+       state: present
+       password: "{{ mypassword | password_hash('sha512') }}"
