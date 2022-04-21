@@ -1,0 +1,9 @@
+---
+- name: Updating the servers
+  hosts: all
+  become: true
+  tasks:
+    - name: updating the Server with the latest patches
+      yum: 
+        name: *
+        state: latest
