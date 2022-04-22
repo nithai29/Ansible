@@ -1,21 +1,11 @@
 ---
-- name: User Creation and changing password
+- name: Simple user creation and changing password
   hosts: all
   become: true
   vars:
     myuser: "devops"
     mypassword: "devops"
   tasks:
-  # name - Defines the username that is present or to create
-  # groups - Adds users in secondary groups or use groups
-  # state: present - Creates a user or works with a user
-  # state: absent - Deletes a user
-  # shell - Specifies shell-type a user can work on
-  # home - Sets a user’s home directory (default=yes)
-  # createhome: yes - Create a home directory for a user (default=yes)
-  # createhome: no - Do not create a home directory for a user
-
-  # Creating a user "devops"
   - name: Creating a new user "devops" and adding it to group sudo.
     ansible.builtin.user:
       name: "{{ myuser }}"
@@ -24,8 +14,8 @@
       group: wheel
       shell: /bin/bash
         
-   - name: create password
-     ansible.builtin.user:
-       name: {{" myuser "}}
-       state: present
-       password: "{{ mypassword | password_hash('sha512') }}"
+  - name: create password
+    ansible.builtin.user:
+     name: "{{ myuser }}"
+     state: present
+     password: "{{ mypassword | password_hash('sha512') }}"

@@ -14,6 +14,7 @@
       shell: /bin/bash
       uid: 2000
       group: wheel
+      state: present
 
   - name: create a password for the user
     ansible.builtin.user:
@@ -29,9 +30,10 @@
   - name: Changing ssh configuration
     lineinfile:
       dest: /etc/ssh/sshd_config
-      regex: '^PasswordAuthentication'
-      line: "PasswordAuthentication no"
+      regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication yes"
       state: present
+      validate: 'sshd -t -f %s'
       backup: yes
     
   - name: Restart ssh service 
