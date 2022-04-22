@@ -1,0 +1,40 @@
+---
+- name: Create user and deploy ssh keys 
+  hosts: all
+  become: true
+  vars:
+    username: 'devops'
+    password: 'devops'
+    comment: 'Used for Automation'
+  tasks:
+  - name: Create a new user
+    ansible.builtin.user:
+      name: "{{ username }}"
+      comment: "{{ comment }}"
+      shell: /bin/bash
+      uid: 2000
+      group: wheel
+
+  - name: create a password for the user
+    ansible.builtin.user:
+      name: "{{ username }}"
+      state: present
+      password: "{{ password | password_hash ('sha512') }}"
+
+  - name: Adding the user to sudoers
+    copy:
+      dest: "/etc/sudoers.d/{{ username }}"
+      content: "{{ username }} ALL=(ALL) NOPASSWD:ALL"
+  
+  - name: Changing ssh configuration
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regex: '^PasswordAuthentication'
+      line: "PasswordAuthentication no"
+      state: present
+      backup: yes
+    
+  - name: Restart ssh service 
+    service: 
+      name: sshd
+      state: restarted

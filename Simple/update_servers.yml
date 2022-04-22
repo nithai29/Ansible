@@ -1,9 +1,9 @@
 ---
-- name: Updating the servers
+- name: Upgrade all packages
   hosts: all
   become: true
   tasks:
-    - name: updating the Server with the latest patches
+    - name: Upgrade all packages
       yum: 
-        name: *
+        name: '*'
         state: latest

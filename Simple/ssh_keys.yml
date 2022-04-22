@@ -1,0 +1,20 @@
+---
+- name: Create user and deploy ssh keys 
+  hosts: all
+  become: true
+  vars:
+    username: 'devops'
+    password: 'devops'
+    comment: 'Used for Automation'
+  tasks:
+  ansible.builtin.user:
+    name: "{{ username }}"
+    comment: "{{ comment }}"
+    shell: /bin/bash
+    uid: 2000
+    group: wheel
+
+- name: Adding the user to sudoers
+  copy:
+    dest: "/etc/sudoers.d/{{ username }}"
+    content: "{{ username }} ALL=(ALL) NOPASSWD:ALL"
