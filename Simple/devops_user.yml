@@ -1,0 +1,53 @@
+--- 
+- name: Creating a common user for Automation purpose. 
+  hosts: all
+  become: true
+  vars:
+    user_name: devops
+    password: password
+  tasks:
+    - name: updating the server.
+      yum:
+        name: '*'
+        state: latest
+    
+    - name: Creating common user
+      ansible.builtin.user:
+      name: '{{ user_name }}'
+      group: wheel
+      uid: 2000
+      comment: "Devops user for automation"
+      shell: /bin/bash
+
+    - name: Changing user password
+      ansible.builtin.user:
+      name: '{{ user_name }}'
+      state: present
+      password: '{{ password | password_hash(sha512) }}'
+      
+    - name: Add user to sudo file
+      copy:
+        dest: "/etc/sudoers.d/{{user_name}}"
+        content: "{{ user_name }} ALL=(ALL) NOPASSWD:ALL"
+      
+    - name: Generate ssh-keys
+
+    - name: Exchange ssh keys
+      authorized_key:
+        user: devops
+        state: present
+        key: "{{lookup ('file', 'home/vagrant/.ssh/id_rsa.pub')}}"
+
+    - name: Change ssh configuration
+      lineinfile:
+        dest: /etc/ssh/sshd_conf
+        regex: "^PasswordAuthetication"
+        line: "PasswordAuthetication yes"
+        state: present 
+        validate: 'sshd -t -f %s'
+        backup: yes
+    
+    - name: Restart sshd
+      service:
+        name: sshd
+        state: restarted
