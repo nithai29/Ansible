@@ -1,15 +1,15 @@
 ---
   - name: Playbook to install and configure Apache
     hosts: testservers
-    become: true
+    become: yes
     tasks:
       - name: Installing latest version of Apache 
         yum:
           name: httpd
           state: latest
       
-      - name: Starting and enabling the service
+      - name: Start and enable the service
         service:
           name: httpd
           state: started 
-          enabled: yes
+          enabled: true

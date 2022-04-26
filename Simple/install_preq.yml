@@ -1,0 +1,25 @@
+---
+  - name: Install prerequisite software on New servers
+    hosts: testservers
+    user: devops
+    become: yes
+    tasks:
+      - name: upgrading the servers
+        yum:
+          name: '*'
+          state: latest
+
+      - name: Installing latest version of all prerequisites Softwares
+        yum:
+          name:
+            - httpd
+            - git
+            - wget
+            - default-jdk
+          state: latest
+
+      - name: Start and enable httpd service
+        service:
+          name: httpd
+          state: started 
+          enabled: true
