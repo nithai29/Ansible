@@ -1,6 +1,6 @@
 ---
  - name: Installing Ansible on the local host
-   hosts: local
+   hosts: AnsibleMaster 
    become: true
    tasks:
      - name: updating the server
@@ -9,16 +9,13 @@
          state: latest
 
      - name: installing the prereqs
-        yum:
-          name: 
-            - python3
-            - python3-pip
-            - git
-            - wget
-      
-     - name: Enable a RHSM repository
-        community.general.rhsm_repository:
-          name: ansible-2.8-for-rhel-8-x86_64-rpms
+       yum:
+         name: 
+           - python3
+           - python3-pip
+           - git
+           - wget
+         state: latest
       
      - name: updating the server
        yum:
@@ -26,18 +23,13 @@
          state: latest
 
      - name: Install Ansible
-         yum:
-           name: ansible
-           state: latest
+       yum:
+         name: ansible
+         state: latest
      
      - name: Check version
-         shell: 'ansible --version'
-         register: ansible_version
+       shell: 'ansible --version'
+       register: ansible_version
 
      - debug:
          var: ansible_version
-         
-
-
-      
-    

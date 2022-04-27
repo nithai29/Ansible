@@ -13,17 +13,17 @@
     
     - name: Creating common user
       ansible.builtin.user:
-      name: '{{ user_name }}'
-      group: wheel
-      uid: 2000
-      comment: "Devops user for automation"
-      shell: /bin/bash
+        name: '{{ user_name }}'
+        group: wheel
+        uid: 2000
+        comment: "Devops user for automation"
+        shell: /bin/bash
 
     - name: Changing user password
       ansible.builtin.user:
-      name: '{{ user_name }}'
-      state: present
-      password: '{{ password | password_hash(sha512) }}'
+        name: '{{ user_name }}'
+        state: present
+        password: '{{ password | password_hash('sha512') }}'
       
     - name: Add user to sudo file
       copy:
@@ -36,13 +36,13 @@
       authorized_key:
         user: devops
         state: present
-        key: "{{lookup ('file', 'home/vagrant/.ssh/id_rsa.pub')}}"
+        key: "{{lookup ('file', '/home/vagrant/.ssh/id_rsa.pub')}}"
 
     - name: Change ssh configuration
       lineinfile:
         dest: /etc/ssh/sshd_conf
-        regex: "^PasswordAuthetication"
-        line: "PasswordAuthetication yes"
+        regex: "^PasswordAuthentication"
+        line: "PasswordAuthentication yes"
         state: present 
         validate: 'sshd -t -f %s'
         backup: yes

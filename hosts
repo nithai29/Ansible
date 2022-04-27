@@ -1,2 +1,8 @@
-[testServer]
-3.239.226.80
+[localHost]
+52.54.68.247
+
+[webServer]
+3.220.231.169
+
+[appServer]
+44.201.61.3
