@@ -23,15 +23,13 @@
       ansible.builtin.user:
         name: '{{ user_name }}'
         state: present
-        password: '{{ password | password_hash('sha512') }}'
+        password: "{{ password | password_hash('sha512') }}"
       
     - name: Add user to sudo file
       copy:
         dest: "/etc/sudoers.d/{{user_name}}"
         content: "{{ user_name }} ALL=(ALL) NOPASSWD:ALL"
       
-    - name: Generate ssh-keys
-
     - name: Exchange ssh keys
       authorized_key:
         user: devops
@@ -40,7 +38,7 @@
 
     - name: Change ssh configuration
       lineinfile:
-        dest: /etc/ssh/sshd_conf
+        dest: /etc/ssh/sshd_config
         regex: "^PasswordAuthentication"
         line: "PasswordAuthentication yes"
         state: present 

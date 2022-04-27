@@ -1,32 +1,35 @@
 ---
-- hosts: jenkins-master
+- hosts: jenkinsMaster
   become: yes
-  remote_user: ec2-user
-  become_user: root
 
   tasks:
   - name: updating the system
     yum:
-      name: *
+      name: '*'
       state: latest
 
-- name: Installing prerequisites
+  - name: Installing prerequisites
     yum:
       name: 
-        - default-jdk
+        - java-11-openjdk-devel 
         - git
         - wget
         - unzip
       state: present
+  
+  - name: Downloading the jenkins repo
+    get_url:
+      url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+      dest: /etc/yum.repos.d/jenkins.repo
 
   - name: Importing the jenkins key from url
-    ansible.builtin.rpm_key:
+    rpm_key:
       state: present
-      key: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+      key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
   
   - name: updating the system
     yum:
-      name: *
+      name: '*'
       state: latest
 
   - name: Installing jenkins
@@ -39,3 +42,16 @@
       name: jenkins
       state: started
       enabled: yes
+
+  - name: Getting Jenkins Version
+    shell: 'jenkins --version'
+    register: jenkins_version
+
+  - name: Jenkins Version
+    debug: 
+      msg: jenkins_version,stdout_lines
+
+  - name: Display Admin password
+    debug: 
+      admin_pwd:  "{{ lookup ('file' , '/var/lib/jenkins/secrets/initialAdminPassword') }}"
+     
