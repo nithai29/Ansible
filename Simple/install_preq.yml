@@ -1,7 +1,6 @@
 ---
   - name: Install prerequisite software on New servers
-    hosts: testservers
-    user: devops
+    hosts: all 
     become: yes
     tasks:
       - name: upgrading the servers
@@ -15,7 +14,8 @@
             - httpd
             - git
             - wget
-            - default-jdk
+            - java-11-openjdk
+            - vim
           state: latest
 
       - name: Start and enable httpd service

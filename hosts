@@ -1,9 +1,8 @@
 [jenkinsMaster]
-44.195.93.37
+54.88.246.239
 
-[ansibleMaster]
-3.227.255.15
+[AnsibleMaster]
+18.215.156.196
 
 [tomcatServer]
-44.197.182.242
-
+54.226.190.81
