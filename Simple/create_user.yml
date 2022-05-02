@@ -9,9 +9,8 @@
   - name: Creating a new user "devops" and adding it to group sudo.
     ansible.builtin.user:
       name: "{{ myuser }}"
-      comment: devops
-      uid: 2000
-      group: wheel
+      comment: devops user
+      group: devops
       shell: /bin/bash
         
   - name: create password
