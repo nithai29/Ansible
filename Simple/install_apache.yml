@@ -1,6 +1,6 @@
 ---
   - name: Playbook to install and configure Apache
-    hosts: testservers
+    hosts: app 
     become: yes
     tasks:
       - name: Installing latest version of Apache 

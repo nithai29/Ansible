@@ -14,8 +14,6 @@
     - name: Creating common user
       ansible.builtin.user:
         name: '{{ user_name }}'
-        group: wheel
-        uid: 2000
         comment: "Devops user for automation"
         shell: /bin/bash
 

@@ -11,11 +11,23 @@
         state: latest
         update_cache: yes
     
+    - name: Installing preq java for tomcat
+      yum:
+        name: java-11-openjdk-devel
+        state: present
+
+    - name: Checking java version
+      command: "java --version"
+      register: java_version
+
+    - debug:
+        var: java_version.stdout_lines
+  
     - name: create a directory to download tomcat.
       file:
-      path: /opt/tomcat
-      state: directory
-      mode: '0755'
+        path: /opt/tomcat
+        state: directory
+        mode: '0755'
 
     - name: downloading tomcat.
       get_url:
@@ -26,6 +38,7 @@
       unarchive:
         src: /opt/tomcat/apache-tomcat-9.0.62.tar.gz
         dest: /opt/tomcat/
+        remote_src: True
 
     - name: granting execute permissions to startup tomcat.
       file:
@@ -41,11 +54,13 @@
       file: 
         src: /opt/tomcat/apache-tomcat-9.0.62/bin/startup.sh
         dest: /usr/local/bin/tomcatup
+        state: link
 
     - name:  creating a symbolic link for shutdown
       file: 
         src: /opt/tomcat/apache-tomcat-9.0.62/bin/shutdown.sh
         dest: /usr/local/bin/tomcatdown
+        state: link
 
     - name: start tomcat
-      command: tomcatup
+      shell: /usr/local/bin/tomcatup 
