@@ -1,0 +1,51 @@
+---
+
+# Install Tomcat on Application servers
+
+- hosts: app
+  become: true
+  tasks:
+    - name: updating the server 
+      yum:
+        name: '*'
+        state: latest
+        update_cache: yes
+    
+    - name: create a directory to download tomcat.
+      file:
+      path: /opt/tomcat
+      state: directory
+      mode: '0755'
+
+    - name: downloading tomcat.
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.62/bin/apache-tomcat-9.0.62.tar.gz
+        dest: /opt/tomcat/
+
+    - name: untar the downloaded tomcat tar file.
+      unarchive:
+        src: /opt/tomcat/apache-tomcat-9.0.62.tar.gz
+        dest: /opt/tomcat/
+
+    - name: granting execute permissions to startup tomcat.
+      file:
+        path: /opt/tomcat/apache-tomcat-9.0.62/bin/startup.sh
+        mode: u+x
+    
+    - name: granting execute permissions to shutdown tomcat.
+      file:
+        path: /opt/tomcat/apache-tomcat-9.0.62/bin/shutdown.sh
+        mode: u+x
+
+    - name:  creating a symbolic link for startup
+      file: 
+        src: /opt/tomcat/apache-tomcat-9.0.62/bin/startup.sh
+        dest: /usr/local/bin/tomcatup
+
+    - name:  creating a symbolic link for shutdown
+      file: 
+        src: /opt/tomcat/apache-tomcat-9.0.62/bin/shutdown.sh
+        dest: /usr/local/bin/tomcatdown
+
+    - name: start tomcat
+      command: tomcatup
