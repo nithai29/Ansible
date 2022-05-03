@@ -1,6 +1,6 @@
 --- 
 # Deploying the war file created on jenkins and transfered over to Ansible.
-- name: app
+- hosts: app
   become: true
   tasks:
     - name: Deploying the .war file to tomcat servers.
