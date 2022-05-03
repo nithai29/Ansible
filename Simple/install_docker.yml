@@ -1,0 +1,50 @@
+--- 
+# install docker on Application servers
+- hosts: app
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Remove all old docker packages
+      yum:
+        - docker
+        - docker-client
+        - docker-client-latest
+        - docker-common
+        - docker-latest
+        - docker-latest-logrotate
+        - docker-logrotate
+        - docker-engine
+      state: absent
+    
+    - name: installing yum-utils.
+      yum: 
+        name: yum-utils
+        state: present
+
+    - name: Adding docker repo
+      yum_repository:
+        name: docker-ce
+        description: docker-ce yum yum_repository
+        base_url: https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Installing Docker packages
+      yum:
+        name: 
+          - docker-ce 
+          - docker-ce-cli 
+          - containerd.io 
+          - docker-compose-plugin
+        state: present
+    
+    - name: starting and enabling docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Checking docker version
+      shell: "docker --version"
+      register: docker_version
+
+      debug:
+        vars: docker_version
