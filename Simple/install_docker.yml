@@ -6,15 +6,16 @@
   tasks:
     - name: Remove all old docker packages
       yum:
-        - docker
-        - docker-client
-        - docker-client-latest
-        - docker-common
-        - docker-latest
-        - docker-latest-logrotate
-        - docker-logrotate
-        - docker-engine
-      state: absent
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+        state: absent
     
     - name: installing yum-utils.
       yum: 
@@ -25,15 +26,11 @@
       yum_repository:
         name: docker-ce
         description: docker-ce yum yum_repository
-        base_url: https://download.docker.com/linux/centos/docker-ce.repo
+        baseurl: https://download.docker.com/linux/centos/docker-ce.repo
 
     - name: Installing Docker packages
       yum:
-        name: 
-          - docker-ce 
-          - docker-ce-cli 
-          - containerd.io 
-          - docker-compose-plugin
+        name: docker
         state: present
     
     - name: starting and enabling docker service
@@ -46,5 +43,5 @@
       shell: "docker --version"
       register: docker_version
 
-      debug:
-        vars: docker_version
+    - debug:
+        var: docker_version
