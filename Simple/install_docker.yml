@@ -30,6 +30,7 @@
         name: docker-ce
         description: docker-ce yum yum_repository
         baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+        state: absent
 
     - name: Installing Docker packages
       yum:
@@ -47,7 +48,12 @@
       register: docker_version
 
     - debug:
-        var: docker_version
+        var: docker_version.stdout_lines
+
+    - name: create docker group
+      group:
+        name: docker
+        state: present
 
     - name: create user
       user:
@@ -67,4 +73,3 @@
        recurse: yes
        owner: docker
        group: docker
-      
