@@ -3,6 +3,9 @@
 - hosts: app
   become: true
   gather_facts: false
+  vars: 
+    user_name: docker
+    password: dockerpassword123
   tasks:
     - name: Remove all old docker packages
       yum:
@@ -45,3 +48,14 @@
 
     - debug:
         var: docker_version
+
+    - name: create user
+      user:
+        name: '{{ user_name}}'
+        group: docker
+
+    - name: change password 
+      user:
+        name: '{{ user_name }}'
+        state: present
+        password: "{{ password | password_hash('sha512') }}"
