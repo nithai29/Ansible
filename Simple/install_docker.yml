@@ -59,3 +59,12 @@
         name: '{{ user_name }}'
         state: present
         password: "{{ password | password_hash('sha512') }}"
+
+    - name: create a dirctory and change permissions for docker images
+      file:
+       path: /opt/docker
+       state: directory
+       recurse: yes
+       owner: docker
+       group: docker
+      
