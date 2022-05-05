@@ -1,0 +1,19 @@
+--- 
+- hosts: app
+  become: true
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /bin/python3
+  
+  tasks:
+    - name: login into docker hub.
+      docker_login:
+        username: nithai
+        password: MYdockerP@ssw0rd
+    
+    - name: creating a docker container
+      shell: sudo docker run -d --name valaxy_demo -p 8090:8080 valaxy_demo
+
+    - name: logout of docker hub.
+      docker_login:
+        state: absent
