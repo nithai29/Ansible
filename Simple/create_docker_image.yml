@@ -8,11 +8,11 @@
   tasks:
     - name: login into docker hub.
       docker_login:
-        username: nithai
-        password: MYdockerP@ssw0rd
+        username: 
+        password: 
     
     - name: creating a docker container
-      shell: sudo docker run -d --name valaxy_demo -p 8090:8080 valaxy_demo
+      shell: sudo docker run -d --name docker-test -p 8090:8080 nithai/demos:docker-test 
 
     - name: logout of docker hub.
       docker_login:
