@@ -1,6 +1,6 @@
 --- 
 # install docker on Application servers
-- hosts: app
+- hosts: app 
   become: true
   gather_facts: false
   vars: 
@@ -32,11 +32,22 @@
         baseurl: https://download.docker.com/linux/centos/docker-ce.repo
         state: absent
 
+    - name: Installing docker prequesites 
+      yum:
+        name:
+          - python3
+          - python3-pip
+
+    - name: Installing Docker packages
+      pip:
+        name: docker
+        executable: pip3
+
     - name: Installing Docker packages
       yum:
         name: docker
         state: present
-    
+ 
     - name: starting and enabling docker service
       service:
         name: docker
