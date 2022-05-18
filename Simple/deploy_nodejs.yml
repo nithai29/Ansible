@@ -1,0 +1,57 @@
+---
+# Deploying a nodeja application on servers
+- hosts: app
+  become: yes
+  gather_facts: false
+
+  tasks:
+    - name: create a user nodejs user 
+      user: 
+        username: "nodejsuser"
+        comment: user doe nodejs application
+        generate_ssh_key: true
+        shell: /bin/bash
+
+    - name: create user password     
+        user:
+          name: "{{ username }}"
+          state: present
+          password: "{{ nodejsuser | password_hash('sha512')}}"
+
+    - name: exchange ssh keys
+      authorized_keys:
+        user: "{{ username }}"
+        state: present
+        key: "{{lookup ('file', '/home/devops/,ssh/id_rsa.pub')}}"
+      
+    - name: Installing prerequisites
+      yum:
+        name:
+          - epel-release
+          - npm
+        state: present
+        enablerepo: epel
+        update_cache: yes
+    
+    - name: check npm version
+      shell: npm --version
+      register: "npm_version"
+
+    - debug:
+        vars: npm_version.stdout_lines
+         
+    - name: Install forever (to run Node.js app)
+      npm:
+        name: forever
+        state: latest
+        global: yes
+    
+    - name: location to store application code (var/lib/myapp)
+    - name: pull the code from git 
+    - name: preparing application environment
+    - name: login as app user
+    - name: install app dependencies
+    - name: 
+    - name: edit nginx configuration files 
+    - name: start nginx service
+    - name: 

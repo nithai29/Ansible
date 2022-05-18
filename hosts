@@ -1,21 +1,27 @@
-# Lines beginning with a # are comments, and are only included for
-# illustration. These comments are overkill for most inventory files.
-
-# Application servers
-[app]
+# Jenkins Master
+[jenkins-master]
 192.168.60.4
+
+# Ansible Master
+[ansible-master]
 192.168.60.5
 
-# Database server
-[db]
+# Docker Build Server
+[docker-build]
 192.168.60.6
+
+# Test Server
+[test]
+192.168.60.7
 
 # Group 'multi' with all servers
 [multi:children]
-app
-db
+jenkins-master
+docker-build
+test
 
 # Variables that will be applied to all servers
 [multi:vars]
-ansible_ssh_user=vagrant
-ansible_ssh_private_key_file=~/insecure_private_key
+ansible_ssh_user=devops
+#ansible_ssh_user=vagrant
+#ansible_ssh_private_key_file=/devops/insecure_private_key

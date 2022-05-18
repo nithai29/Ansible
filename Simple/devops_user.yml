@@ -12,9 +12,10 @@
         state: latest
     
     - name: Creating common user
-      ansible.builtin.user:
+      user:
         name: '{{ user_name }}'
         comment: "Devops user for automation"
+        generate_ssh_key: yes
         shell: /bin/bash
 
     - name: Changing user password
@@ -32,7 +33,7 @@
       authorized_key:
         user: devops
         state: present
-        key: "{{lookup ('file', '/home/vagrant/.ssh/id_rsa.pub')}}"
+        key: "{{lookup ('file', '/home/devops/.ssh/id_rsa.pub')}}"
 
     - name: Change ssh configuration
       lineinfile:
