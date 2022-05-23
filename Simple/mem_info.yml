@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Checking CPU info 
+      shell: "cat /proc/meminfo|head -2"
+      register: proc_info
+
+    - name: Displaying CPU info
+      debug:
+        var: proc_info.stdout_lines

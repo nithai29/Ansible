@@ -1,9 +1,10 @@
 ---
-  - name: Playbook to install and configure Apache
+  - name: Install and configure Apache
+    gather_facts: false
     hosts: app 
     become: yes
     tasks:
-      - name: Installing latest version of Apache 
+      - name: Install latest version of Apache 
         yum:
           name: httpd
           state: latest

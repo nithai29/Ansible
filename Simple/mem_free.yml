@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Checking free memory
+      shell: "free -m"
+      register: memory_info
+
+    - name: Displaying memory information
+      debug: 
+        var: memory_info.stdout_lines

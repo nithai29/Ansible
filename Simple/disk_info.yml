@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: get disk info 
+      shell: "df -h"
+      register: disk_info
+    
+    - name: Display disk info
+      debug:
+        var: disk_info.stdout_lines
+        

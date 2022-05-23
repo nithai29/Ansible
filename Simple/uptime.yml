@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks: 
+    - name: Check server uptime
+      shell: "uptime"
+      register: uptime
+    
+    - name: Displaying Server uptime
+      debug:
+        var: uptime.stdout_lines

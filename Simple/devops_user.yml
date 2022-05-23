@@ -5,13 +5,8 @@
   vars:
     user_name: devops
     password: password
-  tasks:
-    - name: updating the server.
-      yum:
-        name: '*'
-        state: latest
-    
-    - name: Creating common user
+  tasks:    
+    - name: Creating user
       user:
         name: '{{ user_name }}'
         comment: "Devops user for automation"
@@ -19,7 +14,7 @@
         shell: /bin/bash
 
     - name: Changing user password
-      ansible.builtin.user:
+      user:
         name: '{{ user_name }}'
         state: present
         password: "{{ password | password_hash('sha512') }}"

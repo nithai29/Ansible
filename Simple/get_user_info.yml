@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Checking if user exists
+      shell: "cat /etc/passwd | grep devops"
+      register: user_info
+
+    - name: Displaying user info
+      debug: 
+        var: user_info.stdout_lines

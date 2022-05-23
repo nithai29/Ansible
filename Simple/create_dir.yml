@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Create Directory
+      file:
+        path: /opt/test_dir
+        state: directory
+        # mode: '0755' defaults to 0755
+      
+
+      

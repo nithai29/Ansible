@@ -16,17 +16,16 @@
           
       - name: Installing latest version of all prerequisites Softwares
         yum:
-          name: "{{ item }}"
+          name:
+            - python3
+            - git
+            - wget
+            - java-11-openjdk
+            - vim
+            - bash-completion
+            - tmux
+            - tree
+            - htop
+            - unzip
+            - curl
           state: latest
-        with_items:
-          - python3
-          - git
-          - wget
-          - java-11-openjdk
-          - vim
-          - bash-completion
-          - tmux
-          - tree
-          - htop
-          - unzip
-          - curl

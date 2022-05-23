@@ -1,20 +1,20 @@
 ---
-- name: Simple user creation and changing password
+- name: User creation and changing password
+  gather_facts: false
   hosts: all
   become: true
   vars:
     myuser: "devops"
-    mypassword: "devops"
+    mypassword: "password"
   tasks:
   - name: Creating a new user "devops" and adding it to group sudo.
-    ansible.builtin.user:
+    user:
       name: "{{ myuser }}"
-      comment: devops user
-      group: devops
+      comment: Devops user for automation
       shell: /bin/bash
         
   - name: create password
-    ansible.builtin.user:
+    user:
      name: "{{ myuser }}"
      state: present
      password: "{{ mypassword | password_hash('sha512') }}"

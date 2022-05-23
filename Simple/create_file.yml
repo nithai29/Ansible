@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Create file and change ownership
+      file:
+        path: /opt/test_dir/test_file.txt
+        state: touch
+        owner: devops
+        group: devops
+        #mode: '0644' default is 644
+    
+    - name: get file information
+      shell: "ls -al /opt/test_dir | grep test_file.txt"
+      register: file_info
+
+    - name: Displaying file information
+      debug: 
+        var: file_info.stdout_lines
