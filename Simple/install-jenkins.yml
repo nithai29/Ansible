@@ -1,5 +1,5 @@
 ---
-- hosts: jenkinsMaster
+- hosts: jenkins-master
   become: yes
 
   tasks:
@@ -37,6 +37,9 @@
       name: jenkins
       state: latest
 
+  - name: Ensure systemd daemon reloaded
+    command: systemctl daemon-reload
+
   - name: Start and enable service
     service: 
       name: jenkins
@@ -49,7 +52,7 @@
 
   - name: Jenkins Version
     debug: 
-      msg: jenkins_version,stdout_lines
+      msg: jenkins_version.stdout_lines
 
   - name: Display Admin password
     debug: 

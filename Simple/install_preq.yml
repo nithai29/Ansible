@@ -9,6 +9,11 @@
           name: '*'
           state: latest
 
+      - name: Add EPEL repository
+        yum:
+          name: epel-release
+          state: present
+          
       - name: Installing latest version of all prerequisites Softwares
         yum:
           name: "{{ item }}"
@@ -19,3 +24,9 @@
           - wget
           - java-11-openjdk
           - vim
+          - bash-completion
+          - tmux
+          - tree
+          - htop
+          - unzip
+          - curl

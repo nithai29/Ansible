@@ -1,1 +1,30 @@
----
+- name: Updating the servers to the latest 
+  yum: 
+    name: "*"
+    state: latest
+
+- name: Uninstall old epel repo.
+  yum:
+    name: 
+      - epel-release
+    state: absent
+
+- name: Install EPEL repo.
+  yum: name=epel-release state=present
+
+- name: Installing latest version of all prerequisites Softwares
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - python3
+    - git
+    - wget
+    - java-11-openjdk
+    - vim
+    - bash-completion
+    - tmux
+    - tree
+    - htop
+    - unzip
+    - curl

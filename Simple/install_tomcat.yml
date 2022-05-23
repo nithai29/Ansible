@@ -2,7 +2,7 @@
 
 # Install Tomcat on Application servers
 
-- hosts: app
+- hosts: docker-build
   become: true
   tasks:
     - name: updating the server 

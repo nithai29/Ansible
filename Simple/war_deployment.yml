@@ -1,9 +1,9 @@
 --- 
 # Deploying the war file created on jenkins and transfered over to Ansible.
-- hosts: app
+- hosts: docker-build
   become: true
   tasks:
     - name: Deploying the .war file to tomcat servers.
       copy:
-        src: /home/vagrant/repos/war_files/webapp/target/webapp.war
+        src: /home/devops/artifacts/webapp/target/webapp.war
         dest: /opt/tomcat/apache-tomcat-9.0.62/webapps/

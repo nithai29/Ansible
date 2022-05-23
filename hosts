@@ -10,18 +10,23 @@
 [docker-build]
 192.168.60.6
 
+# Kube-Master
+[kube-master]
+192.168.60.7
+
 # Test Server
 [test]
-192.168.60.7
+192.168.60.8
 
 # Group 'multi' with all servers
 [multi:children]
 jenkins-master
 docker-build
+kube-master
 test
 
 # Variables that will be applied to all servers
 [multi:vars]
-ansible_ssh_user=devops
-#ansible_ssh_user=vagrant
-#ansible_ssh_private_key_file=/devops/insecure_private_key
+#ansible_ssh_user=devops
+ansible_ssh_user=vagrant
+ansible_ssh_private_key_file=/devops/insecure_private_key
