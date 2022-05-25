@@ -28,4 +28,6 @@
             - htop
             - unzip
             - curl
+            - net-tools
+            - lsof
           state: latest

@@ -1,0 +1,15 @@
+---
+- hosts: all
+  tasks:
+    - name: printing All available facts
+      debug:
+        var: ansible_facts
+        
+    - name: gathering information on listening ports
+      listen_ports_facts:
+        
+    - name: printing listening ports
+      debug:
+        var: ansible_facts.tcp_listen
+        #var: ansible_facts.all_ipv4_addresses
+        
