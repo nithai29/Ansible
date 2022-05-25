@@ -18,12 +18,17 @@
 [test]
 192.168.60.8
 
+#Ubuntu test Server
+[ubuntu]
+192.168.60.9
+
 # Group 'multi' with all servers
 [multi:children]
 jenkins-master
 docker-build
 kube-master
 test
+ubuntu
 
 # Variables that will be applied to all servers
 [multi:vars]

@@ -1,0 +1,16 @@
+---
+- name: Updating servers based on OS family
+  hosts: all
+  become: true
+  tasks:
+    - name: update Redhat server
+      yum:
+        name: "*"
+        state: latest
+      when: ansible_os_family == "RedHat"
+
+    - name: update Ubuntu server
+      apt:
+        name: "*"
+        state: latest
+      when: ansible_os_family == "Debian"
