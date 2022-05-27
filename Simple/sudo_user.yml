@@ -8,16 +8,14 @@
     comment: 'Used for Automation'
   tasks:
   - name: Create a new user
-    ansible.builtin.user:
+    user:
       name: "{{ username }}"
       comment: "{{ comment }}"
       shell: /bin/bash
-      uid: 2000
-      group: wheel
       state: present
 
   - name: create a password for the user
-    ansible.builtin.user:
+    user:
       name: "{{ username }}"
       state: present
       password: "{{ password | password_hash ('sha512') }}"

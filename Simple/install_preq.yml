@@ -1,33 +1,58 @@
 ---
-  - name: Install prerequisite software on New servers
-    hosts: all 
-    gather_facts: false
-    become: yes
-    tasks:
-      - name: upgrading the servers
-        yum:
-          name: '*'
-          state: latest
+- name: Install prerequisite software on new servers
+  hosts: serverTest 
+  become: yes
+  vars:
+    default_pkgs:
+      - python3
+      - git
+      - wget
+      - vim
+      - bash-completion
+      - tmux
+      - tree
+      - htop
+      - unzip
+      - curl
+      - net-tools
+      - lsof
 
-      - name: Add EPEL repository
-        yum:
-          name: epel-release
-          state: present
-          
-      - name: Installing latest version of all prerequisites Softwares
-        yum:
-          name:
-            - python3
-            - git
-            - wget
-            - java-11-openjdk
-            - vim
-            - bash-completion
-            - tmux
-            - tree
-            - htop
-            - unzip
-            - curl
-            - net-tools
-            - lsof
-          state: latest
+    redhat_pkgs:
+      - java-11-openjdk
+      
+    debian_pkgs:
+      - openjdk-11-jdk
+
+  tasks:
+    - name: Installing preq applications on redhat servers
+      block:
+        - name: (Redhat)upgrading the servers
+          yum:
+            name: '*'
+            state: latest
+            update_cache: true
+
+        - name: (Redhat)Add EPEL repository
+          yum:
+            name: epel-release
+            state: present
+            
+        - name: (Redhat)Installing latest version of all prerequisites Softwares
+          yum:
+            name: ["{{ default_pkgs }}", "{{ redhat_pkgs }}"]
+            state: latest
+      when: ansible_os_family == "RedHat"      
+
+    - name: Installing preq applications on Debian servers
+      block:
+        - name: (Debian)upgrading the servers
+          apt:
+            name: "*"
+            state: latest
+            update_cache: true
+        
+        - name: (Debian)Installing latest version of all prerequisites Softwares
+          apt:
+            name: ["{{ default_pkgs }}", "{{ debian_pkgs }}"]
+            state: latest
+      when: ansible_os_family == "Debian"      

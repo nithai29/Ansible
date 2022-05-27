@@ -1,17 +1,17 @@
 # Jenkins Master
-[jenkins-master]
+[jenkinsMaster]
 192.168.60.4
 
 # Ansible Master
-[ansible-master]
+[ansibleMaster]
 192.168.60.5
 
 # Docker Build Server
-[docker-build]
+[dockerBuild]
 192.168.60.6
 
 # Kube-Master
-[kube-master]
+[kubeMaster]
 192.168.60.7
 
 # Test Server
@@ -22,11 +22,16 @@
 [ubuntu]
 192.168.60.9
 
+# Install jenkins test
+[serverTest:children]
+test
+ubuntu
+
 # Group 'multi' with all servers
 [multi:children]
-jenkins-master
-docker-build
-kube-master
+jenkinsMaster
+dockerBuild
+kubeMaster
 test
 ubuntu
 

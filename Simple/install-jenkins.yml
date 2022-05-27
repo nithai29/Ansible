@@ -1,60 +1,89 @@
 ---
-- hosts: jenkins-master
+- hosts: jenkinsTest
   become: yes
-
   tasks:
-  - name: updating the system
-    yum:
-      name: '*'
-      state: latest
+    - name: checking if Jenkins is already installed on the server.
+      shell: "systemctl status jenkins"
+      register: jenkins_status
+      ignore_errors: yes
+    
+    - name: Displaying Jenkins status on server.
+      debug:
+        var: jenkins_status.stderr
 
-  - name: Installing prerequisites
-    yum:
-      name: 
-        - java-11-openjdk-devel 
-        - git
-        - wget
-        - unzip
-      state: present
+    - name: Install and configure Jenkins on Redhat server
+      block:
+        - name: (Redhat) Downloading the jenkins repo
+          get_url:
+            url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+            dest: /etc/yum.repos.d/jenkins.repo
+
+        - name: (Redhat) Importing the jenkins key from url
+          rpm_key:
+            state: present
+            key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+        
+        - name: (Redhat) updating the system
+          yum:
+            name: '*'
+            state: latest
+            update_cache: true
+
+        - name: (Redhat) Installing prerequisites and jenkins
+          yum:
+            name: 
+              - java-11-openjdk-devel 
+              - jenkins
+            state: present
+      when: (ansible_os_family == "RedHat" and jenkins_status.stderr.find('.service could not be found') !=-1)
+
+    - name: Install and configure Jenkins on Ubuntu server
+      block:
+        - name:  (Debian) Adding jenkins apt-key.
+          apt_key:
+            url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+            state: present
+        
+        - name: (Debian) Adding Debian package repository address
+          apt_repository: 
+            repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+            state: present
+        
+        - name: (Debian) updating the system
+          apt:
+            name: '*'
+            state: latest
+            update_cache: yes
   
-  - name: Downloading the jenkins repo
-    get_url:
-      url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
-      dest: /etc/yum.repos.d/jenkins.repo
+        - name: (Debian) Installing prerequisites and jenkins
+          apt:
+            name: 
+              - openjdk-11-jdk
+              - jenkins
+            state: present
+      when: (ansible_os_family == "Debian" and jenkins_status.stderr.find('.service could not be found') !=-1)
 
-  - name: Importing the jenkins key from url
-    rpm_key:
-      state: present
-      key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-  
-  - name: updating the system
-    yum:
-      name: '*'
-      state: latest
+    - name: Ensure systemd daemon reloaded
+      command: systemctl daemon-reload
 
-  - name: Installing jenkins
-    yum:
-      name: jenkins
-      state: latest
+    - name: Start and enable service
+      service: 
+        name: jenkins
+        state: started
+        enabled: yes
 
-  - name: Ensure systemd daemon reloaded
-    command: systemctl daemon-reload
+    - name: Getting Jenkins Version
+      shell: 'jenkins --version'
+      register: jenkins_version
 
-  - name: Start and enable service
-    service: 
-      name: jenkins
-      state: started
-      enabled: yes
+    - name: Jenkins Version
+      debug: 
+        var: jenkins_version.stdout
 
-  - name: Getting Jenkins Version
-    shell: 'jenkins --version'
-    register: jenkins_version
-
-  - name: Jenkins Version
-    debug: 
-      msg: jenkins_version.stdout_lines
-
-  - name: Display Admin password
-    debug: 
-      admin_pwd:  "{{ lookup ('file' , '/var/lib/jenkins/secrets/initialAdminPassword') }}"
-     
+    - name: Display Admin password
+      shell: "cat /var/lib/jenkins/secrets/initialAdminPassword"
+      register: admin_passwd
+    
+    - name: Use this password to unlock jenkins
+      debug:
+        var: admin_passwd.stdout
