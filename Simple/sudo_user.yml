@@ -4,7 +4,7 @@
   become: true
   vars:
     username: 'devops'
-    password: 'devops'
+    password: 'password'
     comment: 'Used for Automation'
   tasks:
   - name: Create a new user

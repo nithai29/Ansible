@@ -35,6 +35,11 @@ kubeMaster
 test
 ubuntu
 
+#Testing servers
+[testenv:children]
+test
+ubuntu
+
 # Variables that will be applied to all servers
 [multi:vars]
 #ansible_ssh_user=devops

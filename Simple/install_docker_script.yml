@@ -1,0 +1,56 @@
+---
+- hosts: testenv
+  become: true
+  vars:
+    rhel_pkgs:
+        - docker
+        - docker-client
+        - docker-client-latest
+        - docker-common
+        - docker-latest
+        - docker-latest-logrotate
+        - docker-logrotate
+        - docker-engine
+        - podman
+        - runc
+
+    debian_pkgs:
+        - docker 
+        - docker-engine 
+        - docker.io 
+        - containerd 
+        - runc
+  tasks:
+    - name: (RHEL)Removing all old docker packages
+      block:
+        - name: (RHEL)Uninstall old versions
+          yum: 
+            name: "{{ rhel_pkgs }}"
+            state: absent
+            update_cache: true
+      when: ansible_os_family == "RedHat"
+
+    - name: (Debian)Removing all old docker packages
+      block:
+        - name: (Debian)Uninstall old versions
+          apt:
+            name: "{{ debian_pkgs }}"
+            state: absent
+            update_cache: true
+      when: ansible_os_family == "Debian"
+
+    - name: Downloading docker installation script.
+      get_url:
+        url: https://get.docker.com
+        dest: /tmp/get-docker.sh
+    
+    - name: Install docker
+      command: "sh /tmp/get-docker.sh"
+    
+    - name: Manage Docker as a non-root user
+      user:
+        name: devops
+        group: docker
+        append: yes
+    
+    - name: checking 
