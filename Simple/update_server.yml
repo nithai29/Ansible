@@ -7,10 +7,12 @@
       yum:
         name: "*"
         state: latest
+        update_cache: true
       when: ansible_os_family == "RedHat"
 
     - name: update Ubuntu server
       apt:
         name: "*"
         state: latest
+        update_cache: true
       when: ansible_os_family == "Debian"

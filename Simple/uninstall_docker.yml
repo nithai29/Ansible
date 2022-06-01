@@ -1,0 +1,61 @@
+--- 
+# install docker on Application servers
+- hosts: testenv 
+  become: true
+  vars: 
+    user_name: dockeradmin
+    password: password
+    image_loc: /opt/docker
+
+    rhel_pkgs:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine
+      - podman
+      - runc
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-compose-plugin
+
+    debian_pkgs:
+      - docker 
+      - docker-engine 
+      - docker.io 
+      - containerd 
+      - runc
+      - docker-ce 
+      - docker-ce-cli 
+      - containerd.io 
+      - docker-compose-plugin
+
+  tasks:
+    - name: Stopping docker service
+      service:
+        name: docker
+        state: stopped
+        enabled: false
+          
+    - name: (RHEL)Removing all old docker packages
+      block:
+        - name: (RHEL)Uninstall old versions
+          yum: 
+            name: '{{ rhel_pkgs }}'
+            state: absent
+            update_cache: true
+      when: ansible_os_family == "RedHat"
+
+    - name: (Debian)Removing all old docker packages
+      block:
+        - name: (Debian)Uninstall old versions
+          apt:
+            name: '{{ debian_pkgs }}'
+            state: absent
+            purge: yes
+            update_cache: true
+      when: ansible_os_family == "Debian"
