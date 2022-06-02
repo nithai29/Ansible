@@ -1,0 +1,30 @@
+---
+- hosts: testenv
+  become: true
+  gather_facts: false
+  vars:
+    cont_name: valaxy_demo
+  tasks:
+    - name: stopping provious version of container
+      docker_container:
+        name: '{{ cont_name }}'
+        state: stopped
+    
+    - name: removed stopped container 
+      docker_ container:
+        name: '{{ cont_name }}'
+        state: absent
+
+    - name: remove docker images
+      docker_image:
+        name: '{{ cont_name }}'
+        state: absent
+
+    - name: pulling the new image from docker hub
+      docker_image:
+        name: nithai/demos:docker-test
+
+    - name: creating a container
+      docker_container:
+        name: docker_test
+        image: docker_test

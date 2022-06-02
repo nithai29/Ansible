@@ -1,44 +1,13 @@
 ---
-- hosts: testenv
+- hosts: all
   become: true
+  gather_facts: false
   vars:
-    rhel_pkgs:
-        - docker
-        - docker-client
-        - docker-client-latest
-        - docker-common
-        - docker-latest
-        - docker-latest-logrotate
-        - docker-logrotate
-        - docker-engine
-        - podman
-        - runc
+    user_name: dockeradmin
+    password: password
+    repo_loc: /opt/cicd
 
-    debian_pkgs:
-        - docker 
-        - docker-engine 
-        - docker.io 
-        - containerd 
-        - runc
   tasks:
-    - name: (RHEL)Removing all old docker packages
-      block:
-        - name: (RHEL)Uninstall old versions
-          yum: 
-            name: "{{ rhel_pkgs }}"
-            state: absent
-            update_cache: true
-      when: ansible_os_family == "RedHat"
-
-    - name: (Debian)Removing all old docker packages
-      block:
-        - name: (Debian)Uninstall old versions
-          apt:
-            name: "{{ debian_pkgs }}"
-            state: absent
-            update_cache: true
-      when: ansible_os_family == "Debian"
-
     - name: Downloading docker installation script.
       get_url:
         url: https://get.docker.com
@@ -46,11 +15,42 @@
     
     - name: Install docker
       command: "sh /tmp/get-docker.sh"
+
+    - name: Starting docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
     
-    - name: Manage Docker as a non-root user
+    - name: Check docker version
+      shell: "docker --version"
+      register: docker_version
+
+    - name: Displaying Docker version
+      debug: 
+        var: docker_version.stdout_lines
+
+    - name: Create docker user
       user:
-        name: devops
+        name: '{{ user_name }}'
+
+    - name: change password 
+      user:
+        name: '{{ user_name }}'
+        state: present
+        password: "{{ password | password_hash('sha512') }}"
+
+    - name: Adding dockeruser to docker group
+      user:
+        name: '{{ user_name }}'
         group: docker
         append: yes
-    
-    - name: checking 
+
+    - name: create a repo directory 
+      file:
+        path: '{{ repo_loc }}'
+        state: directory
+        mode: '0755'
+        recurse: yes
+        owner: '{{ user_name }}'
+        group: '{{ user_name }}'
