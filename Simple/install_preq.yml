@@ -5,6 +5,7 @@
   vars:
     default_pkgs:
       - python3
+      - python3-pip
       - git
       - wget
       - vim
@@ -22,6 +23,7 @@
       
     debian_pkgs:
       - openjdk-11-jdk
+      - python3-pip
 
   tasks:
     - name: Installing preq applications on redhat servers

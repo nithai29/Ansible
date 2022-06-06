@@ -3,28 +3,50 @@
   become: true
   gather_facts: false
   vars:
-    cont_name: valaxy_demo
+    container_name: multi-docker-demo
+    image_name: nithai/multi-docker-demo:latest
+  
   tasks:
-    - name: stopping provious version of container
-      docker_container:
-        name: '{{ cont_name }}'
-        state: stopped
-    
-    - name: removed stopped container 
-      docker_ container:
-        name: '{{ cont_name }}'
-        state: absent
+    - name: Get infos on container
+      docker_container_info:
+        name: '{{ container_name }}'
+      register: result
+      
+    - name: displaying container info
+      debug:
+        var: result.exists
 
-    - name: remove docker images
-      docker_image:
-        name: '{{ cont_name }}'
-        state: absent
+    - name: if container exists perform the following steps.
+      block:
+        - name: stopping provious version of container
+          docker_container:
+            name: '{{ container_name }}'
+            state: stopped
+        
+        - name: removed stopped container 
+          docker_container:
+            name: '{{ container_name }}'
+            state: absent
 
+        - name: remove docker images
+          docker_image:
+            name: '{{ container_name }}'
+            state: absent
+      when: result.exists == true
+
+    - name: Log into docker
+      docker_login:
+        username: username
+        password: password
+      
     - name: pulling the new image from docker hub
       docker_image:
-        name: nithai/demos:docker-test
+        name: '{{ image_name }}'
+        source: pull
 
     - name: creating a container
       docker_container:
-        name: docker_test
-        image: docker_test
+        name: '{{ container_name }}'
+        image: '{{ image_name }}'
+        ports: "8090:8080"
+        state: started

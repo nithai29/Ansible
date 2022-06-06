@@ -1,0 +1,13 @@
+---
+- hosts: testenv
+  become: true
+  tasks:   
+    - name: stop previous version docker
+      shell: docker stop multi-docker-demo
+    - name: remove stopped container
+      shell: docker rm -f multi-docker-demo
+    - name: remove docker images
+      shell: docker image rm -f nithai/multi-docker-demo
+
+#    - name: create docker image
+#      shell: docker run -d --name multi-docker-demo -p 8090:8080 nithai/multi-docker-demo:latest
