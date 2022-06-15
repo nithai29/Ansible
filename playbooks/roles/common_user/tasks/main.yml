@@ -1,2 +1,28 @@
 ---
 # tasks file for common_user
+- name: Creating user
+  user:
+    name: '{{ user_name }}'
+    comment: "Devops user for automation"
+    generate_ssh_key: yes
+    shell: /bin/bash
+
+- name: Changing user password
+  user:
+    name: '{{ user_name }}'
+    state: present
+    password: "{{ password | password_hash('sha512') }}"
+
+- name: Add user to sudo file
+  template:
+    src: sudo_user.j2
+    dest: "/etc/sudoers.d/{{user_name}}"
+
+- name: Change ssh configuration
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    validate: 'sshd -t -f %s'
+    backup: yes
+  notify:
+    - Restart sshd
