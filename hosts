@@ -1,44 +1,40 @@
 # Jenkins Master
-[jenkinsMaster]
+[jenkins]
 192.168.60.4
 
-# Ansible Master
-[ansibleMaster]
+# Infrastructure Master
+[infra]
 192.168.60.5
 
-# Docker Build Server
-[dockerBuild]
+# Kubernetes Master Server
+[kube]
 192.168.60.6
 
-# Kube-Master
-[kubeMaster]
+# RHEL test Server
+[rheltest]
 192.168.60.7
 
-# Test Server
-[test]
+# Ubuntu Test Server
+[ubuntutest]
 192.168.60.8
 
-#Ubuntu test Server
-[ubuntu]
-192.168.60.9
-
-# Install jenkins test
-[serverTest:children]
-test
-ubuntu
+# Application test servers 
+[appTest:children]
+rheltest
+ubuntutest
 
 # Group 'multi' with all servers
 [multi:children]
-jenkinsMaster
-dockerBuild
-kubeMaster
-test
-ubuntu
+jenkins
+infra
+kube
+rheltest
+ubuntutest
 
-#Testing servers
-[testenv:children]
-test
-ubuntu
+# Application test servers 
+[appTest:children]
+rheltest
+ubuntutest
 
 # Variables that will be applied to all servers
 [multi:vars]

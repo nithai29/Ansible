@@ -1,0 +1,22 @@
+---
+# tasks file for update_server
+- name: update Legacy Redhat server
+  yum:
+    name: "*"
+    state: latest
+    update_cache: true
+  when: ( ansible_os_family == "RedHat" and ansible_distribution_major_version <= "7")
+
+- name: update Redhat server
+  dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+  when: (ansible_os_family == "RedHat" and ansible_distribution_major_version > "7")
+
+- name: update Ubuntu server
+  apt:
+    name: "*"
+    state: latest
+    update_cache: true
+  when: ansible_os_family == "Debian"

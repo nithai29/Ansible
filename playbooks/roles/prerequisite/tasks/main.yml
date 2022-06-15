@@ -1,0 +1,25 @@
+- name: Redhat Servers
+  block:
+    - name: (Redhat)Installing Extra Packages for Enterprise Linux
+      yum:
+        name: epel-release
+        state: present
+        update_cache: true
+    
+    - name: (Redhat)Installing prerequisites Software
+      yum:
+        #name: ['{{ default_pkgs }}', '{{ debian_pkgs }}']
+        name: "{{ item }}"
+        state: latest
+      with_items: ["{{ redhat_pkgs }}", "{{ default_pkgs }}"]
+  when: ansible_os_family == "RedHat"      
+
+- name: Debian Servers
+  block:
+    - name: (Debian)Installing prerequisites Software
+      apt:
+        #name: ['{{ default_pkgs }}', '{{ debian_pkgs }}']
+        name: "{{ item }}"
+        state: latest
+      with_items: ["{{ default_pkgs }}", "{{ debian_pkgs }}"]
+  when: ansible_os_family == "Debian"      

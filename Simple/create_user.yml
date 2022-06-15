@@ -1,20 +1,40 @@
 ---
 - name: User creation and changing password
   gather_facts: false
-  hosts: all
+  hosts: localhost 
   become: true
   vars:
-    myuser: "devops"
-    mypassword: "password"
+    username: "devops"
+    password: "password"
   tasks:
   - name: Creating a new user "devops" and adding it to group sudo.
     user:
-      name: "{{ myuser }}"
+      name: "{{ username }}"
       comment: Devops user for automation
+      generate_ssh_key: yes
       shell: /bin/bash
         
   - name: create password
     user:
-     name: "{{ myuser }}"
-     state: present
-     password: "{{ mypassword | password_hash('sha512') }}"
+      name: "{{ username }}"
+      state: present
+      password: "{{ password | password_hash('sha512') }}"
+
+  - name: Add user to sudo file
+    copy:
+      dest: "/etc/sudoers.d/{{username}}"
+      content: "{{ username }} ALL=(ALL) NOPASSWD:ALL"
+
+  - name: Change ssh configuration
+    lineinfile:
+      dest: /etc/ssh/sshd_config
+      regex: "^PasswordAuthentication"
+      line: "PasswordAuthentication yes"
+      state: present 
+      validate: 'sshd -t -f %s'
+      backup: yes
+    
+  - name: Restart sshd
+    service:
+      name: sshd
+      state: restarted
