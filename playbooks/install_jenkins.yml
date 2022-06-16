@@ -1,0 +1,7 @@
+---
+- hosts: jenkins
+  gather_facts: true
+  become: true
+  roles:
+    - update_server
+    - install_jenkins

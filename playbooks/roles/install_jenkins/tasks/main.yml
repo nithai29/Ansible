@@ -1,0 +1,83 @@
+---
+# tasks file for install_jenkins
+- name: checking if Jenkins is already installed on the server.
+  shell: "systemctl status jenkins"
+  register: jenkins_status
+  ignore_errors: yes
+    
+- name: Displaying Jenkins status on server.
+  debug:
+    var: jenkins_status.stderr
+
+- name: Install and configure Jenkins on Redhat server
+  block:
+    - name: (Redhat) Downloading the jenkins repo
+      get_url:
+        url: "{{ rhel_repo }}"
+        dest: /etc/yum.repos.d/jenkins.repo
+
+    - name: (Redhat) Importing the jenkins key from url
+      rpm_key:
+        key: "{{ rhel_key }}"
+        state: present
+        
+    - name: (Redhat) updating the system
+      yum:
+        name: '*'
+        state: latest
+        update_cache: true
+
+    - name: (Redhat) Installing prerequisites and jenkins
+      yum:
+        name: jenkins
+        state: present
+  when: (ansible_os_family == "RedHat" and jenkins_status.stderr.find('.service could not be found') !=-1)
+
+- name: Install and configure Jenkins on Ubuntu server
+  block:
+    - name:  (Debian) Adding jenkins apt-key.
+      apt_key:
+        url: "{{ debian_key }}"
+        state: present
+    
+    - name: (Debian) Adding Debian package repository address
+      apt_repository: 
+        repo: "{{ debian_repo }}"
+        state: present
+    
+    - name: (Debian) updating the system
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+
+    - name: (Debian) Installing prerequisites and jenkins
+      apt:
+        name: jenkins
+        state: present
+  when: (ansible_os_family == "Debian" and jenkins_status.stderr.find('.service could not be found') !=-1)
+
+- name: Ensure systemd daemon reloaded
+  command: systemctl daemon-reload
+
+- name: Start and enable service
+  service: 
+    name: jenkins
+    state: started
+    enabled: yes
+
+- name: Getting Jenkins Version
+  shell: 'jenkins --version'
+  register: jenkins_version
+
+- name: Jenkins Version
+  debug: 
+    var: jenkins_version.stdout
+
+- name: Display Admin password
+  shell: "cat /var/lib/jenkins/secrets/initialAdminPassword"
+  register: admin_passwd
+
+- name: Use this password to unlock jenkins
+  debug:
+    var: admin_passwd.stdout
