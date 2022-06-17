@@ -1,4 +1,9 @@
 ---
 # vars file for common_user
-user_name: devops
+user_name: 
+    - devops
+    - ansibleadmin
+    - jenkinsadmin
+    - sonarqube
+    - dockeradmin
 password: password

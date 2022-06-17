@@ -1,0 +1,41 @@
+---
+  # tasks file for common_user
+  - name: check if the user already exists 
+    shell : /usr/bin/getent passwd "{{ item }}" | /usr/bin/wc -l | tr -d ''
+    loop: "{{ user_name }}"
+    register: check_user
+  
+  - name: display if the user already exists
+    debug:
+      var: check_user
+      
+  - name: Creating user
+    user:
+      name: '{{ item }}'
+      comment: "Devops user for automation"
+      generate_ssh_key: yes
+      shell: /bin/bash
+    loop: "{{ user_name }}"
+  
+  - name: Changing user password
+    user:
+      name: '{{ item }}'
+      state: present
+      password: "{{ password | password_hash('sha512') }}"
+    loop: "{{ user_name }}"
+  
+  - name: Add user to sudo file
+    template:
+      src: sudo_user.j2
+      dest: "/etc/sudoers.d/{{item}}"
+    loop: "{{ user_name }}"
+  
+      
+  - name: Change ssh configuration
+    template:
+      src: sshd_config.j2
+      dest: /etc/ssh/sshd_config
+      validate: 'sshd -t -f %s'
+      backup: yes
+    notify:
+      - Restart sshd

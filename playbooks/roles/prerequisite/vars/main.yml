@@ -18,6 +18,7 @@ default_pkgs:
 redhat_pkgs:
     - 'java-11-openjdk'
     - 'dnf'
+    - 'yum-utils'
       
 debian_pkgs:
     - openjdk-11-jdk

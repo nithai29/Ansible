@@ -1,18 +1,18 @@
 ---
-    - hosts: all
-      gather_facts: false
-      become: true
-      tasks:
-        - name: Create file
-          file:
-            path: /opt/test_dir/test_file.txt
-            state: absent
-        
-        - name: get file information
-          shell: "ls -al /opt/test_dir | grep test_file.txt"
-          register: file_info
+- hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Create file
+      file:
+        path: /opt/test_dir/test_file.txt
+        state: absent
     
-        - name: Displaying file information
-          debug: 
-            var: file_info.stdout_lines
+    - name: get file information
+      shell: "ls -al /opt/test_dir | grep test_file.txt"
+      register: file_info
+
+    - name: Displaying file information
+      debug: 
+        var: file_info.stdout_lines
     

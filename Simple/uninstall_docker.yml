@@ -1,6 +1,6 @@
 --- 
 # install docker on Application servers
-- hosts: testenv 
+- hosts: xxxx
   become: true
   vars: 
     user_name: dockeradmin
