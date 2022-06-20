@@ -12,9 +12,8 @@
 - name: Add user to sudo file
   template:
     src: sudo_user.j2
-    dest: "/etc/sudoers.d/{{item}}"
+    dest: "/etc/sudoers.d/{{ item }}"
   loop: "{{ user_name }}"
-
     
 - name: Change ssh configuration
   template:
