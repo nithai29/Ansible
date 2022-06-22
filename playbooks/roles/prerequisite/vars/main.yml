@@ -14,6 +14,7 @@ default_pkgs:
     - 'curl'
     - 'net-tools'
     - 'lsof'
+    - 'mlocate'
 
 redhat_pkgs:
     - 'java-11-openjdk'
