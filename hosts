@@ -18,6 +18,13 @@
 [ubuntutest]
 192.168.60.8
 
+# local test env
+[devopsProject]
+192.168.56.16
+192.168.56.11
+192.168.56.14
+192.168.56.12
+192.168.56.15
 # Application test servers 
 [appTest:children]
 rheltest
@@ -30,6 +37,7 @@ infra
 kube
 rheltest
 ubuntutest
+devopsProject
 
 # Application test servers 
 [appTest:children]
