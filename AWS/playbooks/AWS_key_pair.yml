@@ -1,7 +1,7 @@
 ---
-host: localhost
-gather_facts: false
-tasks: 
-  - name: create a new ec2 key pair
-    amazon.aws.ec2_key:
-      name: Nithai_test
+- host: any
+  gather_facts: false
+  tasks: 
+    - name: create a new ec2 key pair
+      amazon.aws.ec2_key:
+        name: Nithai_test
