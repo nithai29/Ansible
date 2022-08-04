@@ -7,6 +7,7 @@
         name: Nithai_test
         region: "us-east-1"
       register: keypair_out
+      when: state == "absent"
 
     - debug:
         var: keypair_out
