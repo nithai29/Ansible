@@ -9,4 +9,4 @@
       register: keyout
 
     - debug:
-        vars: keyout
+        var: keyout
