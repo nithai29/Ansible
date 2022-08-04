@@ -1,0 +1,41 @@
+# VPC information
+vpc_name: "Nithai-VPC"
+vpc_cidr: "172.16.0.0/21"
+region: "us-east-1"
+
+# Subnet Information
+# Public Subnet 01
+pubSub01: "Nithai-PubSub-01"
+pubSub01_avail_zone: "us-east-1a"
+pubSub01_cidr_block: "172.16.1.0/24"
+
+# public subnet 02
+pubSub02: "Nithai-PubSub-02"
+pubSub02_avail_zone: "us-east-1b"
+pubSub02_cidr_block: "172.16.2.0/24"
+
+# public subnet 03
+pubSub03: "Nithai-PubSub-03"
+pubSub03_avail_zone: "us-east-1c"
+pubSub03_cidr_block: "172.16.3.0/24"
+
+# private subnet 01
+priSub01: "Nithai-PriSub-01"
+priSub01_avail_zone: "us-east-1a"
+priSub01_cidr_block: "172.16.4.0/24"
+
+# private subnet 02
+priSub02: "Nithai-priSub-02"
+priSub02_avail_zone: "us-east-1b"
+priSub02_cidr_block: "172.16.5.0/24"
+
+# private subnet 03
+priSub03: "Nithai-priSub-03"
+priSub03_avail_zone: "us-east-1c"
+priSub03_cidr_block: "172.16.6.0/24"
+
+# Internet_Gateway:
+
+# Route Table
+
+# NAT Gateway:

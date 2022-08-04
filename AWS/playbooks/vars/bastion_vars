@@ -1,0 +1,5 @@
+bastion_ami: "ami-090fa75af13c156b4"
+region: "us-east-1"
+
+# Security Group
+MYIP: "98.47.2.239/32"
