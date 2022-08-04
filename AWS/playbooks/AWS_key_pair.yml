@@ -7,6 +7,7 @@
         name: Nithai_test
         region: "us-east-1"
       register: keypair_out
+      when changed  = "False"
 
     - debug:
         var: keypair_out
@@ -15,3 +16,4 @@
       copy:
         content: "{{keypair_out.key.private_key}}"
         dest: ./Nithai.test.pem
+      when: keypair_out.changed
