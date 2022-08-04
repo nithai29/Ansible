@@ -6,3 +6,7 @@
       ec2_key:
         name: Nithai_test
         region: "us-east-1"
+      register: keyout
+
+    - debug:
+        vars: keyout
