@@ -6,7 +6,12 @@
       ec2_key:
         name: Nithai_test
         region: "us-east-1"
-      register: keyout
+      register: keypair_out
 
     - debug:
-        var: keyout
+        var: keypair_out
+    
+    - name: Storing the key to a file 
+      copy:
+        content: "{{keypair_out.key.private_key}}"
+        dest: ./Nithai.test.pem
