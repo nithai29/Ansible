@@ -1,5 +1,5 @@
 ---
-host: local
+host: localhost
 gather_facts: false
 tasks: 
   - name: create a new ec2 key pair
