@@ -7,8 +7,7 @@
         name: Nithai_test
         region: "us-east-1"
       register: keypair_out
-      when: keypair_out.msg != "key pair already exists"
-
+      
     - debug:
         var: keypair_out
     
