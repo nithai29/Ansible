@@ -97,5 +97,34 @@
             Name: "Nithai_IGW"
         register: igw_information
 
-          
+      - name: Creating public Route table
+        ec2_vpc_route_table:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          state: "{{state}}"
+          resource_tags:
+            Name: "Nithai_public_RT"
+          subnets:
+            - "{{pubsub01_information.subnet.id}}"
+            - "{{pubsub02_information.subnet.id}}"
+            - "{{pubsub03_information.subnet.id}}"
+          routes:
+            - dest: 0.0.0.0/0
+              gateway_id: "{{igw_information.gateway_id}}"
+            - dest: ::/0
+              gateway_id: "{{igw_information.gateway_id}}"
+          register: publicRT_information
 
+      - name: Creating public Route table
+        ec2_vpc_route_table:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          state: "{{state}}"
+          resource_tags:
+            Name: "Nithai_private_RT"
+          subnets:
+            - "{{prisub01_information.subnet.id}}"
+            - "{{prisub02_information.subnet.id}}"
+            - "{{prisub03_information.subnet.id}}"
+          routes: None
+          register: publicRT_information
