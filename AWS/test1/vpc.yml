@@ -113,7 +113,19 @@
               gateway_id: "{{igw_information.gateway_id}}"
         register: publicRT_information
 
-      - name: Creating public Route table
+      - name: Create new nat gateway and allocate new EIP if a nat gateway does not yet exist in the subnet.
+        ec2_vpc_nat_gateway:
+          state: "{{state}}"
+          subnet_id: "{{pubsub02_information.subnet.id}}"
+          wait: true
+          region: "{{region}}"
+          if_exist_do_not_create: true
+        register: nat_gateway_information
+
+      - debug: 
+          var: nat_gateway_information
+
+      - name: Creating private Route table
         ec2_vpc_route_table:
           vpc_id: "{{vpc_information.vpc.id}}"
           region: "{{region}}"
@@ -124,4 +136,7 @@
             - "{{prisub01_information.subnet.cidr_block}}"
             - "{{prisub02_information.subnet.cidr_block}}"
             - "{{prisub03_information.subnet.cidr_block}}"
-        register: publicRT_information
+          routes:
+            - dest: 0.0.0.0/0
+              gateway_id: "{{nat_gateway_information.gateway_id}}"
+        register: privateRT_information
