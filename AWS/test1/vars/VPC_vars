@@ -34,4 +34,4 @@ prisub03_cidr: 172.16.5.0/24
 prisub03_region: us-east-1c
 
 # Route Table information
-state: present
+state: "present"
