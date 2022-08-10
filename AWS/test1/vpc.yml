@@ -124,5 +124,4 @@
             - "{{prisub01_information.subnet.cidr_block}}"
             - "{{prisub02_information.subnet.cidr_block}}"
             - "{{prisub03_information.subnet.cidr_block}}"
-          routes: None
         register: publicRT_information
