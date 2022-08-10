@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: create a new key pair, return generated private key
+      ec2_key:
+        name: "test1"
+        region: "us-east-1"
+      register: keypair_output
+    
+    - name: displaying the keypair output
+      debug:
+        var: keypair_output
+
+
+
