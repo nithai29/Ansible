@@ -9,7 +9,7 @@
         ec2_vpc_net:
           name: "{{vpc_name}}"
           cidr_block: "{{vpc_cidr_block}} "
-          region: "{{vpc_region}}"
+          region: "{{region}}"
           dns_support: yes
           dns_hostnames: yes
           tenancy: default
@@ -18,3 +18,18 @@
       
       - debug:
           var: vpc_information
+
+      - name: Create public subnet 01
+        ec2_vpc_subnet:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          az: "{{zone1}}"
+          cidr: "{{pubsub01_cidr}}"
+          state: "{{state}}"
+          map_public: yes
+          resource_tags:
+            Name: "{{pubsub01_name}}"
+        register: pubsub01_information
+
+      - debug:
+          var: pubsub01_information

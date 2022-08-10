@@ -1,37 +1,36 @@
 # VPC information
 vpc_name: "Nithai"
 vpc_cidr_block: 172.16.0.0/21
-vpc_region: us-east-1
+region: us-east-1
 
 # Public subnet 01 Subnet Information
 pubsub01_name: "Nithai_pubsub_01"
 pubsub01_cidr: 172.16.0.0/24
-pubsub01_region: us-east-1a
 
 # Public subnet 02 Subnet Information
 pubsub02_name: "Nithai_pubsub_02"
 pubsub02_cidr: 172.16.1.0/24
-pubsub02_region: us-east-1b
 
 # Public subnet 03 Subnet Information
 pubsub03_name: "Nithai_pubsub_03"
 pubsub03_cidr: 172.16.2.0/24
-pubsub03_region: us-east-1c
 
 # Private subnet 01 Subnet Information
 prisub01_name: "Nithai_prisub_01"
 prisub01_cidr: 172.16.3.0/24
-prisub01_region: us-east-1a
 
 # Private subnet 02 Subnet Information
 prisub02_name: "Nithai_prisub_02"
 prisub02_cidr: 172.16.4.0/24
-prisub02_region: us-east-1b
 
 # Private subnet 03 Subnet Information
 prisub03_name: "Nithai_prisub_03"
 prisub03_cidr: 172.16.5.0/24
-prisub03_region: us-east-1c
+
+# availability zone Infomration
+zone1: us-east-1a
+zone2: us-east-1b
+zone3: us-east-1c
 
 # Route Table information
 state: "present"
