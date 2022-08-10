@@ -11,6 +11,11 @@
     - name: displaying the keypair output
       debug:
         var: keypair_output
+    
+    - name: Creating the keypair
+      copy:
+        content: "{{ keypair_output.key.private_key }}"
+        dest: test1.pem
 
 
 
