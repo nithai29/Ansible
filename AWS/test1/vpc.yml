@@ -17,4 +17,4 @@
         register: vpc_information
       
       - debug:
-        var: vpc_information
+          var: vpc_information
