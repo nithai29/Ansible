@@ -138,5 +138,5 @@
             - "{{prisub03_information.subnet.cidr_block}}"
           routes:
             - dest: 0.0.0.0/0
-              gateway_id: "{{nat_gateway_information.gateway_id}}"
+              gateway_id: "{{nat_gateway_information.nat_gateway_id}}"
         register: privateRT_information
