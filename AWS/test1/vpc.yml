@@ -87,3 +87,15 @@
           resource_tags:
             Name: "{{prisub03_name}}"
         register: prisub03_information
+
+      - name: create Internet Gateway
+        ec2_vpc_igw:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          state: "{{state}}"
+          resource_tags:
+            Name: "Nithai_IGW"
+        register: igw_information
+
+          
+
