@@ -31,5 +31,59 @@
             Name: "{{pubsub01_name}}"
         register: pubsub01_information
 
-      - debug:
-          var: pubsub01_information
+      - name: Create public subnet 02
+        ec2_vpc_subnet:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          az: "{{zone2}}"
+          cidr: "{{pubsub02_cidr}}"
+          state: "{{state}}"
+          map_public: yes
+          resource_tags:
+            Name: "{{pubsub02_name}}"
+        register: pubsub02_information
+
+      - name: Create public subnet 03
+        ec2_vpc_subnet:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          az: "{{zone3}}"
+          cidr: "{{pubsub03_cidr}}"
+          state: "{{state}}"
+          map_public: yes
+          resource_tags:
+            Name: "{{pubsub03_name}}"
+        register: pubsub03_information
+
+      - name: Create private subnet 01
+        ec2_vpc_subnet:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          az: "{{zone1}}"
+          cidr: "{{prisub01_cidr}}"
+          state: "{{state}}"
+          resource_tags:
+            Name: "{{prisub01_name}}"
+        register: prisub01_information
+
+      - name: Create private subnet 02
+        ec2_vpc_subnet:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          az: "{{zone2}}"
+          cidr: "{{prisub02_cidr}}"
+          state: "{{state}}"
+          resource_tags:
+            Name: "{{prisub02_name}}"
+        register: prisub02_information
+
+      - name: Create private subnet 03
+        ec2_vpc_subnet:
+          vpc_id: "{{vpc_information.vpc.id}}"
+          region: "{{region}}"
+          az: "{{zone3}}"
+          cidr: "{{prisub03_cidr}}"
+          state: "{{state}}"
+          resource_tags:
+            Name: "{{prisub03_name}}"
+        register: prisub03_information
