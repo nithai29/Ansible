@@ -38,9 +38,19 @@
               cidr_ip: "{{myIP}}"
               rule_desc: allow ssh traffic from my IP
           tags:
-            Name: "Bastion host"
+            Name: "Bastion host SG"
         register: bastion_sg_information
 
+        - debug: 
+            var: bastion_sg_information
+            
       # - name: creating bastion host
       #   ec2:
-      #     key_name: 
+      #     key_name: "{{keypair_name}}"
+      #     instance_type: t2.micro
+      #     image: "{{ami}}"
+      #     wait: yes
+      #     group: Bastion-SG
+      #     count: 1
+      #     vpc_subnet_id: "{{pubsub01id}}"
+      #     assign_public_ip: yes
