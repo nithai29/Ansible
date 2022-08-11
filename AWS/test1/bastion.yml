@@ -11,7 +11,7 @@
       - name: create a new key pair, return generated private key
         ec2_key:
           name: "{{keypair_name}}"
-          region: "us-east-1"
+          region: "{{region}}"
         register: keypair_output
       
       # - name: displaying the keypair output
@@ -20,15 +20,15 @@
       
       - name: Download the keypair
         copy:
-          content: "{{ keypair_output.key.private_key }}"
+          content: "{{keypair_output.key.private_key}}"
           dest: "{{keypair_name}}.pem"
           mode: 0400
         when: keypair_output.changed
 
       - name: security group for bastion hosts
         ec2_group:
-          name: Bastion-SG
-          description: Bastion host security group
+          name: "{{sg_name}}"
+          description: "{{desc}}"
           region: "{{region}}"
           vpc_id: "{{vpcid}}"
           rules:
@@ -41,16 +41,33 @@
             Name: "Bastion host SG"
         register: bastion_sg_information
 
-      - debug: 
-          var: bastion_sg_information
+      # - debug: 
+      #     var: bastion_sg_information
 
-      # - name: creating bastion host
-      #   ec2:
-      #     key_name: "{{keypair_name}}"
-      #     instance_type: t2.micro
-      #     image: "{{ami}}"
-      #     wait: yes
-      #     group: Bastion-SG
-      #     count: 1
-      #     vpc_subnet_id: "{{pubsub01id}}"
-      #     assign_public_ip: yes
+      - name: creating bastion host
+        ec2:
+          key_name: "{{keypair_name}}"
+          instance_type: t2.micro
+          image: "{{ami}}"
+          wait: yes
+          group: "{{bastion_sg_information.group_id}}"
+          count: 1
+          vpc_subnet_id: "{{pubsub01id}}"
+          assign_public_ip: yes
+          instance_tags:
+            Name: Bastion Host
+            Service: Jump Server
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
+          exact_count: 1
+          count_tag:
+            Name: Bastion Host
+            Service: Jump Server
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
+        register: Bastion_host_information
+
+      - debug:
+          var: Bastion_host_information

@@ -1,8 +1,17 @@
+# Security group information
+sg_name: Bastion-SG
+desc: "Bastion host security group"
+myIP: 98.47.2.239/32
+
 # Bastion Host information
 ami: ami-08d4ac5b634553e16
 region: us-east-1
 
-# Security group information
-myIP: 98.47.2.239/32
+# Tags information
+name: "Bastion"
+service: "Jump Server"
+env: "production"
+res_owner: "Nithai"
+team: "Devops"
 
 keypair_name: Bastion
