@@ -32,7 +32,7 @@
           region: "{{region}}"
           vpc_id: "{{vpcid}}"
           rules:
-            - porto: tcp
+            - proto: tcp
               from_port: 22
               to_port: 22
               cidr_ip: "{{myIP}}"
