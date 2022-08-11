@@ -41,9 +41,9 @@
             Name: "Bastion host SG"
         register: bastion_sg_information
 
-        - debug: 
-            var: bastion_sg_information
-            
+      - debug: 
+          var: bastion_sg_information
+
       # - name: creating bastion host
       #   ec2:
       #     key_name: "{{keypair_name}}"
