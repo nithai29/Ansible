@@ -10,7 +10,7 @@
 
       - name: create a new key pair, return generated private key
         ec2_key:
-          name: "bastion_key"
+          name: "{{keypair_name}}"
           region: "us-east-1"
         register: keypair_output
       
@@ -21,7 +21,7 @@
       - name: Download the keypair
         copy:
           content: "{{ keypair_output.key.private_key }}"
-          dest: test1.pem
+          dest: "{{keypair_name}}".pem
           mode: 0400
         when: keypair_output.changed
 
@@ -37,7 +37,7 @@
               to_port: 22
               cidr_ip: "{{myIP}}"
               rule_desc: allow ssh traffic from my IP
-          register: bastion_sg_information
+        register: bastion_sg_information
 
       # - name: creating bastion host
       #   ec2:

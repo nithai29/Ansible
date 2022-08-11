@@ -4,3 +4,5 @@ region: us-east-1
 
 # Security group information
 myIP: 98.47.2.239/32
+
+keypair_name: Bastion
