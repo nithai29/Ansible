@@ -37,6 +37,8 @@
               to_port: 22
               cidr_ip: "{{myIP}}"
               rule_desc: allow ssh traffic from my IP
+          tags:
+            Name: "Bastion host"
         register: bastion_sg_information
 
       # - name: creating bastion host
