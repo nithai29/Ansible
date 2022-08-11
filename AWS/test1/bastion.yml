@@ -14,10 +14,6 @@
           region: "{{region}}"
         register: keypair_output
       
-      # - name: displaying the keypair output
-      #   debug:
-      #     var: keypair_output
-      
       - name: Download the keypair
         copy:
           content: "{{keypair_output.key.private_key}}"
@@ -40,9 +36,6 @@
           tags:
             Name: "Bastion host SG"
         register: bastion_sg_information
-
-      - debug: 
-          var: bastion_sg_information
 
       - name: creating bastion host
         ec2:
@@ -70,5 +63,7 @@
             Team: "{{team}}"
         register: Bastion_host_information
 
-      - debug:
-          var: Bastion_host_information
+        # - name: create an ec2 output file 
+        #   copy:
+        #     content: "keypair: {{keypair_output.key.name}}\nec2_sg: {{bastion_sg_information.group_id}}\nec2_host: {{Bastion_host_information}}"
+      
