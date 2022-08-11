@@ -1,0 +1,44 @@
+--- 
+  - hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Importing required variables
+        include_vars: vars/bastion_vars
+
+      - name: Importing additional required variables
+        include_vars: vars/output_vars
+
+      - name: create a new key pair, return generated private key
+        ec2_key:
+          name: "bastion_key"
+          region: "us-east-1"
+        register: keypair_output
+      
+      # - name: displaying the keypair output
+      #   debug:
+      #     var: keypair_output
+      
+      - name: Download the keypair
+        copy:
+          content: "{{ keypair_output.key.private_key }}"
+          dest: test1.pem
+          mode: 0400
+        when: keypair_output.changed
+
+      - name: security group for bastion hosts
+        ec2_group:
+          name: Bastion-SG
+          description: Bastion host security group
+          region: "{{region}}"
+          vpc_id: "{{vpcid}}"
+          rules:
+            - porto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: "{{myIP}}"
+              rule_desc: allow ssh traffic from my IP
+          register: bastion_sg_information
+
+      # - name: creating bastion host
+      #   ec2:
+      #     key_name: 

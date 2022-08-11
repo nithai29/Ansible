@@ -28,8 +28,8 @@
             Name: "{{pubsub01_name}}"
         register: pubsub01_information
 
-      - debug:
-          var: pubsub01_information
+      # - debug:
+      #     var: pubsub01_information
 
       - name: Create public subnet 02
         ec2_vpc_subnet:
@@ -122,8 +122,8 @@
           if_exist_do_not_create: true
         register: nat_gateway_information
 
-      - debug: 
-          var: nat_gateway_information
+      # - debug: 
+      #     var: nat_gateway_information
 
       - name: Creating private Route table
         ec2_vpc_route_table:
