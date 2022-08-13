@@ -7,13 +7,18 @@
 
       - name: Create the VPC
         ec2_vpc_net:
-          name: "{{vpc_name}}"
+          name: "{{name}}_VPC"
           cidr_block: "{{vpc_cidr_block}} "
           region: "{{region}}"
           dns_support: yes
           dns_hostnames: yes
           tenancy: default
           state: "{{state}}"
+          tags:
+            Name: "{{name}}_VPC"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: vpc_information
       
       - name: Create public subnet 01
@@ -24,8 +29,11 @@
           cidr: "{{pubsub01_cidr}}"
           state: "{{state}}"
           map_public: yes
-          resource_tags:
-            Name: "{{pubsub01_name}}"
+          tags:
+            Name: "{{name}}_pubsub01"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: pubsub01_information
 
       # - debug:
@@ -39,8 +47,11 @@
           cidr: "{{pubsub02_cidr}}"
           state: "{{state}}"
           map_public: yes
-          resource_tags:
-            Name: "{{pubsub02_name}}"
+          tags:
+            Name: "{{name}}_pubsub02"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: pubsub02_information
 
       - name: Create public subnet 03
@@ -51,8 +62,11 @@
           cidr: "{{pubsub03_cidr}}"
           state: "{{state}}"
           map_public: yes
-          resource_tags:
-            Name: "{{pubsub03_name}}"
+          tags:
+            Name: "{{name}}_pubsub03"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: pubsub03_information
 
       - name: Create private subnet 01
@@ -62,8 +76,11 @@
           az: "{{zone1}}"
           cidr: "{{prisub01_cidr}}"
           state: "{{state}}"
-          resource_tags:
-            Name: "{{prisub01_name}}"
+          tags:
+            Name: "{{name}}_prisub01"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: prisub01_information
 
       - name: Create private subnet 02
@@ -73,8 +90,11 @@
           az: "{{zone2}}"
           cidr: "{{prisub02_cidr}}"
           state: "{{state}}"
-          resource_tags:
-            Name: "{{prisub02_name}}"
+          tags:
+            Name: "{{name}}_prisub02"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: prisub02_information
 
       - name: Create private subnet 03
@@ -84,8 +104,11 @@
           az: "{{zone3}}"
           cidr: "{{prisub03_cidr}}"
           state: "{{state}}"
-          resource_tags:
-            Name: "{{prisub03_name}}"
+          tags:
+            Name: "{{name}}_prisub03"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: prisub03_information
 
       - name: create Internet Gateway
@@ -93,8 +116,11 @@
           vpc_id: "{{vpc_information.vpc.id}}"
           region: "{{region}}"
           state: "{{state}}"
-          resource_tags:
-            Name: "Nithai_IGW"
+          tags:
+            Name: "{{name}}_IGW"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: igw_information
 
       - name: Creating public Route table
@@ -102,8 +128,11 @@
           vpc_id: "{{vpc_information.vpc.id}}"
           region: "{{region}}"
           state: "{{state}}"
-          resource_tags:
-            Name: "Nithai_public_RT"
+          tags:
+            Name: "{{name}}_public_RT"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
           subnets:
             - "{{pubsub01_information.subnet.cidr_block}}"
             - "{{pubsub02_information.subnet.cidr_block}}"
@@ -119,6 +148,11 @@
           subnet_id: "{{pubsub02_information.subnet.id}}"
           wait: true
           region: "{{region}}"
+          tags:
+            Name: "{{name}}_NAT_gateway"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
           if_exist_do_not_create: true
         register: nat_gateway_information
 
@@ -130,8 +164,11 @@
           vpc_id: "{{vpc_information.vpc.id}}"
           region: "{{region}}"
           state: "{{state}}"
-          resource_tags:
+          tags:
             Name: "Nithai_private_RT"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
           subnets:
             - "{{prisub01_information.subnet.cidr_block}}"
             - "{{prisub02_information.subnet.cidr_block}}"

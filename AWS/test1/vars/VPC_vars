@@ -1,36 +1,26 @@
 # VPC information
-vpc_name: "Nithai"
 vpc_cidr_block: 172.16.0.0/21
 region: us-east-1
+state: "present"
 
-# Public subnet 01 Subnet Information
-pubsub01_name: "Nithai_pubsub_01"
+# Tags:
+name: Nithai
+service: "testing"
+env: "QA"
+res_owner: "Nithai Karingula"
+team: "Devops"
+
+# Public subnet CIDR Information
 pubsub01_cidr: 172.16.0.0/24
-
-# Public subnet 02 Subnet Information
-pubsub02_name: "Nithai_pubsub_02"
 pubsub02_cidr: 172.16.1.0/24
-
-# Public subnet 03 Subnet Information
-pubsub03_name: "Nithai_pubsub_03"
 pubsub03_cidr: 172.16.2.0/24
 
-# Private subnet 01 Subnet Information
-prisub01_name: "Nithai_prisub_01"
+# Private subnet CIDR Information
 prisub01_cidr: 172.16.3.0/24
-
-# Private subnet 02 Subnet Information
-prisub02_name: "Nithai_prisub_02"
 prisub02_cidr: 172.16.4.0/24
-
-# Private subnet 03 Subnet Information
-prisub03_name: "Nithai_prisub_03"
 prisub03_cidr: 172.16.5.0/24
 
 # availability zone Infomration
 zone1: us-east-1a
 zone2: us-east-1b
 zone3: us-east-1c
-
-# Route Table information
-state: "present"
