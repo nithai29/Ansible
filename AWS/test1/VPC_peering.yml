@@ -28,7 +28,7 @@
       - name: Accept local VPC peering request
         ec2_vpc_peer:
           region: "{{ region }}"
-          peering_id: "{{ vpc_peer.peering_id }}"
+          peering_id: "{{ vpc_peer_information.peering_id }}"
           state: accept
         register: vpc_peer_action_information
 
