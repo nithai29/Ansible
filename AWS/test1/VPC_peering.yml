@@ -3,7 +3,7 @@
     gather_facts: false
     tasks:
       - name: importing variables for VPC Peering 
-        include_vars: vars/'"Admin_VPC_output_vars"'
+        include_vars: vars/Admin_VPC_output_vars
 
       - name: importing variables for VPC Peering 
         include_vars: vars/output_vars
