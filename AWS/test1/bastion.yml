@@ -6,7 +6,7 @@
         include_vars: vars/bastion_vars
 
       - name: Importing additional required variables
-        include_vars: vars/"{{name}}_VPC_output_vars"
+        include_vars: vars/output_vars
 
       - name: create a new key pair, return generated private key
         ec2_key:
