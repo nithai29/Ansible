@@ -10,15 +10,27 @@
 
       - name: Create local account VPC peering Connection
         ec2_vpc_peer:
-          region: "{{region}}"
-          vpc_id: "{{Admin_VPC}}"
-          peer_vpc_id: "{{vpcid}}"
-          state: "{{state}}"
+          region: "{{ region }}"
+          vpc_id: "{{ Admin_VPC }}"
+          peer_vpc_id: "{{ vpcid }}"
+          state: "{{ state }}"
           tags:
             Name: Peering connection to Admin VPC
             service: VPC Peering 
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: vpc_peer_information
-      
+
+      - debug:
+          var: vpc_peer_information
+
+      - name: Accept local VPC peering request
+        community.aws.ec2_vpc_peer:
+          region: "{{ region }}"
+          peering_id: "{{ vpc_peer.peering_id }}"
+          state: accept
+        register: vpc_peer_action_information
+
+      - debug: 
+          var: vpc_peer_action_information
