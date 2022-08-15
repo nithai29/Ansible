@@ -196,4 +196,4 @@
       - name: create facts file
         copy:
           content: "vpcid: {{vpc_information.vpc.id}}\npubsub01id: {{pubsub01_information.subnet.id}}\npubsub02id: {{pubsub02_information.subnet.id}}\npubsub03id: {{pubsub03_information.subnet.id}}\nprisub01id: {{prisub01_information.subnet.id}}\nprisub02id: {{prisub02_information.subnet.id}}\nprisub03id: {{prisub03_information.subnet.id}}\nigwid: {{igw_information.gateway_id}}\npublicRTid: {{publicRT_information.route_table.id}}\nnatgwid: {{nat_gateway_information.nat_gateway_id}}\nprivateRTid: {{privateRT_information.route_table.id}}"
-          dest: vars/output_vars
+          dest: vars/"{{name}}_VPC_output_vars"

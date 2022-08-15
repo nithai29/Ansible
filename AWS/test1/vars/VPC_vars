@@ -1,24 +1,24 @@
 # VPC information
-vpc_cidr_block: 172.16.0.0/21
+vpc_cidr_block: 10.0.0.0/21
 region: us-east-1
 state: "present"
 
 # Tags:
-name: Nithai
-service: "testing"
-env: "QA"
+name: Admin
+service: "CICD"
+env: "Prod"
 res_owner: "Nithai Karingula"
 team: "Devops"
 
 # Public subnet CIDR Information
-pubsub01_cidr: 172.16.0.0/24
-pubsub02_cidr: 172.16.1.0/24
-pubsub03_cidr: 172.16.2.0/24
+pubsub01_cidr: 10.0.0.0/24
+pubsub02_cidr: 10.0.1.0/24
+pubsub03_cidr: 10.0.2.0/24
 
 # Private subnet CIDR Information
-prisub01_cidr: 172.16.3.0/24
-prisub02_cidr: 172.16.4.0/24
-prisub03_cidr: 172.16.5.0/24
+prisub01_cidr: 10.0.3.0/24
+prisub02_cidr: 10.0.4.0/24
+prisub03_cidr: 10.0.5.0/24
 
 # availability zone Infomration
 zone1: us-east-1a
