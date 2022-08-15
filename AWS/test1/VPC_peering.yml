@@ -26,7 +26,7 @@
           var: vpc_peer_information
 
       - name: Accept local VPC peering request
-        community.aws.ec2_vpc_peer:
+        ec2_vpc_peer:
           region: "{{ region }}"
           peering_id: "{{ vpc_peer.peering_id }}"
           state: accept
