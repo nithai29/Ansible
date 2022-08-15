@@ -1,0 +1,18 @@
+--- 
+  - hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: importing variables for VPC Peering 
+        include_vars: 
+
+      - name: Create local account VPC peering Connection
+        ec2_vpc_peer:
+          region: ap-southeast-2
+          vpc_id: vpc-12345678
+          peer_vpc_id: vpc-87654321
+          state: present
+          tags:
+            Name: Peering connection for VPC 21 to VPC 22
+            CostCode: CC1234
+            Project: phoenix
+        register: vpc_peer
