@@ -148,11 +148,11 @@
           subnet_id: "{{pubsub02_information.subnet.id}}"
           wait: true
           region: "{{region}}"
-          resource_tags:
-            Name: "{{name}}_NAT_gateway"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+          # resource_tags:
+          #   Name: "{{name}}_NAT_gateway"
+          #   Environment: "{{env}}"
+          #   Resource owner: "{{res_owner}}"
+          #   Team: "{{team}}"
           if_exist_do_not_create: true
         register: nat_gateway_information
 
