@@ -1,5 +1,5 @@
 # Admin VPC information 
-Admin_VPC: vpc-03cdf719d81447360
+Admin_VPC: vpc-010345be3b16970c8
 
 # VPC information
 vpc_cidr_block: 10.0.0.0/21
