@@ -148,7 +148,7 @@
           subnet_id: "{{pubsub02_information.subnet.id}}"
           wait: true
           region: "{{region}}"
-          tags:
+          resource_tags:
             Name: "{{name}}_NAT_gateway"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
