@@ -7,9 +7,9 @@ region: us-east-1
 state: "present"
 
 # Tags:
-name: Admin
-service: "CICD"
-env: "Prod"
+name: Nithai
+service: "vprofile"
+env: "testing"
 res_owner: "Nithai Karingula"
 team: "Devops"
 
