@@ -1,0 +1,17 @@
+ami: ami-08d4ac5b634553e16
+ec2_type: "t2.small"
+region: "us-east-1"
+
+keypair_name: vprostack
+
+# Tags:
+name: Nithai
+service: "vprofile"
+env: "testing"
+res_owner: "Nithai Karingula"
+team: "Devops"
+
+
+# ec2 Infomration 
+name
+

@@ -1,0 +1,6 @@
+--- 
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Importing required variables
+      include_vars: vars/output_vars

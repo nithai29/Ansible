@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  gather_facts: flase
+  tasks:
+    - name: Importing additional required variables
+      include_vars: vars/output_vars
+    
+    - name: Importing additional required variables
+      include_vars: vars/stack_vars
+
+    - name: create a new key pair, return generated private key
+      ec2_key:
+        name: "{{keypair_name}}"
+        region: "{{region}}"
+      register: ec2_keypair_output
+      
+    - name: Download the keypair
+      copy:
+        content: "{{keypair_output.key.private_key}}"
+        dest: "{{keypair_name}}.pem"
+        mode: 0400
+      when: ec2_keypair_output.changed
+
+    - name: security group for Load Balancer
+        ec2_group:
+          name: "{{sg_name}}"
+          description: "{{desc}}"
+          region: "{{region}}"
+          vpc_id: "{{vpcid}}"
+          rules:
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow http traffic from anywhere
+          tags:
+            Name: "Bastion host SG"
+        register: bastion_sg_information

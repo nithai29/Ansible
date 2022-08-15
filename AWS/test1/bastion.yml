@@ -63,7 +63,8 @@
             Team: "{{team}}"
         register: Bastion_host_information
 
-        # - name: create an ec2 output file 
-        #   copy:
-        #     content: "keypair: {{keypair_output.key.name}}\nec2_sg: {{bastion_sg_information.group_id}}\nec2_host: {{Bastion_host_information}}"
+        - name: create an ec2 output file 
+          copy:
+            content: "bastion_keypair: {{keypair_output.key.name}}\nbastion_ec2_sg: {{bastion_sg_information.group_id}}\nbastion_ec2_host: {{Bastion_host_information}}"
+            dest: vars/bastion_output_vars
       
