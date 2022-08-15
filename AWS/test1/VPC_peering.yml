@@ -3,16 +3,22 @@
     gather_facts: false
     tasks:
       - name: importing variables for VPC Peering 
-        include_vars: 
+        include_vars: vars/'"Admin_VPC_output_vars"'
+
+      - name: importing variables for VPC Peering 
+        include_vars: vars/output_vars
 
       - name: Create local account VPC peering Connection
         ec2_vpc_peer:
-          region: ap-southeast-2
-          vpc_id: vpc-12345678
-          peer_vpc_id: vpc-87654321
-          state: present
+          region: "{{region}}"
+          vpc_id: "{{Admin_vpc}}"
+          peer_vpc_id: "{{vpcid}}"
+          state: "{{state}}"
           tags:
-            Name: Peering connection for VPC 21 to VPC 22
-            CostCode: CC1234
-            Project: phoenix
-        register: vpc_peer
+            Name: Peering connection to Admin VPC
+            service: VPC Peering 
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
+        register: vpc_peer_information
+      
