@@ -23,7 +23,7 @@
 
       - name: security group for bastion hosts
         ec2_group:
-          name: "{{sg_name}}"
+          name: "{{bastion_sg}}"
           description: "{{desc}}"
           region: "{{region}}"
           vpc_id: "{{vpcid}}"

@@ -23,8 +23,8 @@
 
     - name: security group for Load Balancer
         ec2_group:
-          name: "{{sg_name}}"
-          description: "{{desc}}"
+          name: "{{name}}_lb_sg"
+          description: allow http traffic from anywhere
           region: "{{region}}"
           vpc_id: "{{vpcid}}"
           rules:
@@ -34,5 +34,32 @@
               cidr_ip: 0.0.0.0/0
               rule_desc: allow http traffic from anywhere
           tags:
-            Name: "Bastion host SG"
-        register: bastion_sg_information
+            Name: "{{lb_sg_name}} SG"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
+        register: "{{lb_sg_name}}_sg_information"
+
+    - name: security group for Vprofile stack
+        ec2_group:
+          name: "{{name}}_vprofile_sg"
+          description: allow ssh traffic from everywhere and all ports within sg
+          region: "{{region}}"
+          vpc_id: "{{vpcid}}"
+          prune_rules: no
+          rules:
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              group_id: "{{lb_sg_name}}_sg_information.group_id"
+              rule_desc: allow http traffic from my load balancer
+            
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: "{{bastion_ec2_sg}}"
+              rule_desc: allow ssh traffic from my IP
+
+          tags:
+            Name: "{{name}} vprofile SG"
+        register: "{{name}}_vprofile_sg_information"

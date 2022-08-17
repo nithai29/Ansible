@@ -1,7 +1,4 @@
-ami: ami-08d4ac5b634553e16
-ec2_type: "t2.small"
 region: "us-east-1"
-
 keypair_name: vprostack
 
 # Tags:
@@ -11,7 +8,18 @@ env: "testing"
 res_owner: "Nithai Karingula"
 team: "Devops"
 
+# Security Group Information
+# Load balancer Infomration
+lb_sg_name
+lb_desc
+
+# Application Security Group
+app_sg_name:
+app_desc:
 
 # ec2 Infomration 
 name
+
+ami: ami-08d4ac5b634553e16
+ec2_type: "t2.small"
 

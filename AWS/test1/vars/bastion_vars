@@ -1,5 +1,5 @@
 # Security group information
-sg_name: Bastion-SG
+bastion_sg: Bastion-SG
 desc: "Bastion host security group"
 myIP: 98.47.2.239/32
 
