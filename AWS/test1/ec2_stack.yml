@@ -43,9 +43,6 @@
           Team: "{{team}}"
       register: app_lb_sg_information
 
-    - debug: 
-        var: app_lb_sg_information
-
     - name: security group for Vprofile stack
       ec2_group:
         name: "{{name}}_app_sg"
@@ -70,6 +67,12 @@
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
       register: app_sg_information
+
+    - debug: 
+        var: app_sg_information
+    
+    - debug:
+        var: app_sg_information.group_id
 
     - name: updating Vprofile stack security group with itself. 
       ec2_group:
