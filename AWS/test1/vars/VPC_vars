@@ -7,8 +7,8 @@ region: us-east-1
 state: "present"
 
 # Tags:
-name: Nithai
-service: "vprofile"
+name: vprofile
+service: Application
 env: "testing"
 res_owner: "Nithai Karingula"
 team: "Devops"
