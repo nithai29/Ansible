@@ -57,7 +57,7 @@
           - proto: tcp
             from_port: 80
             to_port: 80
-            group_id: app_lb_sg_information.group_id
+            group_id: "{{app_lb_sg_information.group_id}}"
             rule_desc: allow http traffic from my load balancer
           
           - proto: tcp
