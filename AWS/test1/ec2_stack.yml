@@ -6,6 +6,9 @@
       include_vars: vars/output_vars
     
     - name: Importing additional required variables
+      include_vars: vars/bastion_output_vars
+    
+    - name: Importing additional required variables
       include_vars: vars/stack_vars
 
     - name: create a new key pair, return generated private key
