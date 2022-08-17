@@ -6,6 +6,7 @@ myIP: 98.47.2.239/32
 # Bastion Host information
 ami: ami-08d4ac5b634553e16
 region: us-east-1
+ec2_type: "t2.small"
 
 # Tags information
 name: "Bastion"

@@ -40,7 +40,7 @@
       - name: creating bastion host
         ec2:
           key_name: "{{keypair_name}}"
-          instance_type: t2.micro
+          instance_type: "{{ ec2_type }}"
           image: "{{ami}}"
           wait: yes
           group_id: "{{bastion_sg_information.group_id}}"
