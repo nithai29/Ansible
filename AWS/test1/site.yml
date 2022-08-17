@@ -1,4 +1,4 @@
 ---
 - import_playbook: vpc.yml
 - import_playbook: bastion.yml
-- import_playbook: ec2-stack.yml
+- import_playbook: ec2_stack.yml
