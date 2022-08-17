@@ -52,7 +52,6 @@
         description: allow ssh traffic from everywhere and all ports within sg
         region: "{{region}}"
         vpc_id: "{{vpcid}}"
-        purge_rules: no
         rules:
           - proto: tcp
             from_port: 80
