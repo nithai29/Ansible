@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  gather_facts: flase
+  gather_facts: false
   tasks:
     - name: Importing additional required variables
       include_vars: vars/output_vars
@@ -38,10 +38,10 @@
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
-      register: "{{name}}_lb_sg_information"
+      register: app_lb_sg_information
 
     - debug: 
-        var: "{{name}}_lb_sg_information"
+        var: app_lb_sg_information
 
     - name: security group for Vprofile stack
       ec2_group:
@@ -54,7 +54,7 @@
           - proto: tcp
             from_port: 80
             to_port: 80
-            group_id: "{{name}}_lb_sg_information.group_id"
+            group_id: app_lb_sg_information.group_id
             rule_desc: allow http traffic from my load balancer
           
           - proto: tcp
@@ -67,7 +67,7 @@
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
-      register: "{{name}}_app_sg_information"
+      register: app_sg_information
 
     - name: updating Vprofile stack security group with itself. 
       ec2_group:
@@ -85,4 +85,4 @@
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
-      register: "{{name}}_app_sg_update_information"
+      register: app_sg_update_information
