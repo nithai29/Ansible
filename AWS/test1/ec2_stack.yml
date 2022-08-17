@@ -40,6 +40,9 @@
           Team: "{{team}}"
       register: "{{name}}_lb_sg_information"
 
+    - debug: 
+        var: "{{name}}_lb_sg_information"
+
     - name: security group for Vprofile stack
       ec2_group:
         name: "{{name}}_app_sg"
