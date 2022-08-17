@@ -83,7 +83,7 @@
         purge_rules: no
         rules:
           - proto: all
-            group_id: app_sg_information.group_id
+            group_id: "{{app_sg_information.group_id}}"
             rule_desc: allow all traffic within the group
         tags:
           Name: "{{name}} app SG"
