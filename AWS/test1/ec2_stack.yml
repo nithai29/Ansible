@@ -63,7 +63,7 @@
           - proto: tcp
             from_port: 22
             to_port: 22
-            cidr_ip: "{{bastion_ec2_sg}}"
+            group_id: "{{bastion_ec2_sg}}"
             rule_desc: allow ssh traffic from my IP
         tags:
           Name: "{{name}} app SG"
