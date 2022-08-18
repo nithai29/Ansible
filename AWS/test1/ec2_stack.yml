@@ -101,16 +101,15 @@
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
         # count: 1
-        exact_count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
-        assign_public_ip: yes
         instance_tags:
           Name: "Web01 Host"
           Service: "Web Server"
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
+        exact_count: 1
         count_tag:
           Name: "Web01 Host"
           Service: "Web Server"
@@ -128,16 +127,15 @@
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
         # count: 1
-        exact_count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
-        assign_public_ip: yes
         instance_tags:
           Name: "app01 Host"
           Service: "Web Server"
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
+        exact_count: 1
         count_tag:
           Name: "app01 Host"
           Service: "app Server"
@@ -155,16 +153,15 @@
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
         # count: 1
-        exact_count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
-        assign_public_ip: yes
         instance_tags:
           Name: "mc01 Host"
           Service: "Memcached Server"
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
+        exact_count: 1
         count_tag:
           Name: "mc01 Host"
           Service: "Memcached Server"
@@ -182,16 +179,15 @@
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
         # count: 1
-        exact_count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
-        assign_public_ip: yes
         instance_tags:
           Name: "rmq01 Host"
           Service: "RabbitMQ Server"
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
+        exact_count: 1
         count_tag:
           Name: "rmq01 Host"
           Service: "RabbitMQ Server"
@@ -209,16 +205,15 @@
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
         # count: 1
-        exact_count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
-        assign_public_ip: yes
         instance_tags:
           Name: "db01 Host"
           Service: "MYSQL Server"
           Environment: "{{env}}"
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
+        exact_count: 1
         count_tag:
           Name: "db01 Host"
           Service: "MYSQL Server"
