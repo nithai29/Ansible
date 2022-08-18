@@ -228,4 +228,4 @@
       register: db01_host_information
     
     - debug:
-        var: '{{db01_host_information}}'
+        var: "{{db01_host_information}}"
