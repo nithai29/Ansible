@@ -41,7 +41,7 @@
         ec2_instance:
           key_name: "{{keypair_name}}"
           instance_type: "{{ ec2_type }}"
-          image: "{{ami}}"
+          image_id: "{{ami}}"
           wait: yes
           group_id: "{{bastion_sg_information.group_id}}"
           # count: 1
@@ -55,12 +55,6 @@
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
           exact_count: 1
-          count_tag:
-            Name: Bastion Host
-            Service: Jump Server
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
         register: Bastion_host_information
 
       # - debug:
