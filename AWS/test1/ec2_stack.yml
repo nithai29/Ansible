@@ -197,7 +197,7 @@
         state: present
         instance_ids:
           - "{{web01_host_information.instance_ids}}"
-        pruge_instance_ids: true
+        purge_instance_ids: true
         security_group_ids: "{{app_lb_sg_information.group_id}}"
         subnets:
           - "{{prisub01id}}"
