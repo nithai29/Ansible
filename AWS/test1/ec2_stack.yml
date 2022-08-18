@@ -192,7 +192,7 @@
 
     - local_action:
         module: ec2_elb_lb
-        name: "{{name}}_elb" 
+        name: "{{name}}-elb" 
         region: "{{region}}"
         state: present
         instance_ids:
