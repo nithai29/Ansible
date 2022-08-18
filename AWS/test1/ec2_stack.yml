@@ -96,7 +96,7 @@
       ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
-        image: "{{ami}}"
+        image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
@@ -122,7 +122,7 @@
       ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
-        image: "{{ami}}"
+        image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
@@ -148,7 +148,7 @@
       ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
-        image: "{{ami}}"
+        image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
@@ -174,7 +174,7 @@
       ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
-        image: "{{ami}}"
+        image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
@@ -200,7 +200,7 @@
       ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
-        image: "{{ami}}"
+        image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         group_id: "{{app_sg_information.group_id}}"
