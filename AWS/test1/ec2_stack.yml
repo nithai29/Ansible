@@ -91,3 +91,29 @@
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
       register: app_sg_update_information
+
+    - name: creating Nginx host
+        ec2:
+          key_name: "{{keypair_name}}"
+          instance_type: "{{ ec2_type }}"
+          image: "{{ami}}"
+          wait: yes
+          group_id: "{{app_sg_information.group_id}}"
+          # count: 1
+          exact_count: 1
+          region: "{{region}}"
+          vpc_subnet_id: "{{prisub01id}}"
+          assign_public_ip: yes
+          instance_tags:
+            Name: "Web01 Host"
+            Service: "Web Server"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
+          count_tag:
+           Name: "Web01 Host"
+            Service: "Web Server"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
+        register: web01_host_information
