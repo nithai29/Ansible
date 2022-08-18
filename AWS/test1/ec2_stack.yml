@@ -93,7 +93,7 @@
       register: app_sg_update_information
 
     - name: creating Nginx host
-      ec2:
+      ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
         image: "{{ami}}"
@@ -120,7 +120,7 @@
       register: web01_host_information
 
     - name: creating Tomcat host app01
-      ec2:
+      ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
         image: "{{ami}}"
@@ -147,7 +147,7 @@
       register: app01_host_information
 
     - name: creating Memcached host mc01
-      ec2:
+      ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
         image: "{{ami}}"
@@ -174,7 +174,7 @@
       register: mc01_host_information
 
     - name: creating RabbitMQ host rmq01
-      ec2:
+      ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
         image: "{{ami}}"
@@ -201,7 +201,7 @@
       register: rmq01_host_information
 
     - name: creating MYSQL host db01
-      ec2:
+      ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
         image: "{{ami}}"
@@ -228,4 +228,4 @@
       register: db01_host_information
     
     - debug:
-        var: "{{db01_host_information}}"
+        var: db01_host_information

@@ -38,7 +38,7 @@
         register: bastion_sg_information
 
       - name: creating bastion host
-        ec2:
+        ec2_instance:
           key_name: "{{keypair_name}}"
           instance_type: "{{ ec2_type }}"
           image: "{{ami}}"
