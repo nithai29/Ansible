@@ -17,7 +17,7 @@
       - name: Download the keypair
         copy:
           content: "{{keypair_output.key.private_key}}"
-          dest: "{{keypair_name}}.pem"
+          dest: "keys/{{keypair_name}}.pem"
           mode: 0400
         when: keypair_output.changed
 

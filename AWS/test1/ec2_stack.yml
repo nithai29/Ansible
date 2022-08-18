@@ -20,7 +20,7 @@
     - name: Download the keypair
       copy:
         content: "{{ec2_keypair_output.key.private_key}}"
-        dest: "{{keypair_name}}.pem"
+        dest: "keys/{{keypair_name}}.pem"
         mode: 0400
       when: ec2_keypair_output.changed
 
@@ -100,7 +100,6 @@
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        # count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
         tags:
@@ -110,12 +109,6 @@
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
         exact_count: 1
-        # count_tag:
-        #   Name: "Web01 Host"
-        #   Service: "Web Server"
-        #   Environment: "{{env}}"
-        #   Resource owner: "{{res_owner}}"
-        #   Team: "{{team}}"
       register: web01_host_information
 
     - name: creating Tomcat host app01
@@ -126,7 +119,6 @@
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        # count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
         tags:
@@ -136,12 +128,6 @@
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
         exact_count: 1
-        # count_tag:
-        #   Name: "app01 Host"
-        #   Service: "app Server"
-        #   Environment: "{{env}}"
-        #   Resource owner: "{{res_owner}}"
-        #   Team: "{{team}}"
       register: app01_host_information
 
     - name: creating Memcached host mc01
@@ -152,7 +138,6 @@
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        # count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
         tags:
@@ -162,12 +147,6 @@
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
         exact_count: 1
-        # count_tag:
-        #   Name: "mc01 Host"
-        #   Service: "Memcached Server"
-        #   Environment: "{{env}}"
-        #   Resource owner: "{{res_owner}}"
-        #   Team: "{{team}}"
       register: mc01_host_information
 
     - name: creating RabbitMQ host rmq01
@@ -178,7 +157,6 @@
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        # count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
         tags:
@@ -188,12 +166,6 @@
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
         exact_count: 1
-        # count_tag:
-        #   Name: "rmq01 Host"
-        #   Service: "RabbitMQ Server"
-        #   Environment: "{{env}}"
-        #   Resource owner: "{{res_owner}}"
-        #   Team: "{{team}}"
       register: rmq01_host_information
 
     - name: creating MYSQL host db01
@@ -204,7 +176,6 @@
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        # count: 1
         region: "{{region}}"
         vpc_subnet_id: "{{prisub01id}}"
         tags:
@@ -214,12 +185,6 @@
           Resource owner: "{{res_owner}}"
           Team: "{{team}}"
         exact_count: 1
-        # count_tag:
-        #   Name: "db01 Host"
-        #   Service: "MYSQL Server"
-        #   Environment: "{{env}}"
-        #   Resource owner: "{{res_owner}}"
-        #   Team: "{{team}}"
       register: db01_host_information
     
     - debug:
