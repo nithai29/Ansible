@@ -111,7 +111,8 @@
         exact_count: 1
       register: web01_host_information
 
-    - debug: Display web01_host_information 
+    - name: Display web01_host_information 
+      debug: 
         var: web01_host_information
 
     - name: creating Tomcat host app01
