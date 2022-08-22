@@ -68,11 +68,11 @@
           Team: "{{team}}"
       register: app_sg_information
 
-    - debug: 
-        var: app_sg_information
+    # - debug: 
+    #     var: app_sg_information
     
-    - debug:
-        var: app_sg_information.group_id
+    # - debug:
+    #     var: app_sg_information.group_id
 
     - name: updating Vprofile stack security group with itself. 
       ec2_group:
@@ -191,8 +191,8 @@
         exact_count: 1
       register: db01_host_information
     
-    - debug:
-        var: db01_host_information
+    # - debug:
+    #     var: db01_host_information
 
     - name: gather ec2 instance information based on VPC id
       ec2_instance_info:
@@ -201,8 +201,8 @@
           vpc-id: "{{vpcid}}"
       register: ec2_instance_information
 
-    - debug:
-        var: ec2_instance_information
+    # - debug:
+    #     var: ec2_instance_information
 
     # - local_action:
     #     module: ec2_elb_lb
@@ -232,7 +232,7 @@
         health_check_path: /
         successful_response_codes: "200,250-260"
         targets:
-          - Id: "{{web01_host_information.instance_id}}"
+          - Id: "{{web01_host_information.instances[0].instance_id}}"
             Port: 80
         state: present
         wait_timeout: 200
