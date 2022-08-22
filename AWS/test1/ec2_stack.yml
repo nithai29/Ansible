@@ -225,6 +225,7 @@
     - name: Create a target group with instance targets
       elb_target_group:
         name: "{{name}}-elb-TG"
+        region: "{{region}}"
         protocol: http
         port: 81
         vpc_id: "{{vpcid}}"
@@ -245,6 +246,7 @@
     - name: Create a Application load balancer with instance targets
       elb_application_lb:
         name: "{{name}}-elb"
+        region: "{{region}}"
         security_groups: "{{app_lb_sg_information.group_id}}"
         subnets:
           - "{{prisub01id}}"
