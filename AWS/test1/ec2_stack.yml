@@ -192,7 +192,7 @@
 
     - name: gather ec2 instance information based on VPC id
       ec2_instance_info:
-      region: "{{ region }}"
+        region: "{{ region }}"
         filters:
           vpc-id: "{{vpcid}}"
       register: ec2_instance_information
