@@ -190,6 +190,15 @@
     - debug:
         var: db01_host_information
 
+    - name: gather ec2 instance information based on VPC id
+      ec2_instance_info:
+        filters:
+          vpc-id: "{{vpcid}}"
+      register: ec2_instance_information
+
+    - debug:
+        var: ec2_instance_information
+        
     # - local_action:
     #     module: ec2_elb_lb
     #     name: "{{name}}-elb" 
