@@ -190,24 +190,68 @@
     - debug:
         var: db01_host_information
 
-    - local_action:
-        module: ec2_elb_lb
-        name: "{{name}}-elb" 
-        region: "{{region}}"
+    # - local_action:
+    #     module: ec2_elb_lb
+    #     name: "{{name}}-elb" 
+    #     region: "{{region}}"
+    #     state: present
+    #     instance_ids:
+    #       - "{{web01_host_information.instance_ids}}"
+    #     purge_instance_ids: true
+    #     security_group_ids: "{{app_lb_sg_information.group_id}}"
+    #     subnets:
+    #       - "{{prisub01id}}"
+    #       - "{{prisub02id}}"
+    #       - "{{prisub03id}}"
+    #     listeners:
+    #       - protocol: http
+    #         load_balancer_port: 80
+    #         instance_port: 80
+
+    - name: Create a target group with instance targets
+      community.aws.elb_target_group:
+        name: "{{name}}-elb-TG"
+        protocol: http
+        port: 81
+        vpc_id: "{{vpcid}}"
+        health_check_protocol: http
+        health_check_path: /
+        successful_response_codes: "200,250-260"
+        targets:
+          - Id: "{{web01_host_information.instance_ids}}"
+            Port: 80
         state: present
-        instance_ids:
-          - "{{web01_host_information.instance_ids}}"
-        purge_instance_ids: true
-        security_group_ids: "{{app_lb_sg_information.group_id}}"
-        subnets:
-          - "{{prisub01id}}"
-          - "{{prisub02id}}"
-          - "{{prisub03id}}"
-        listeners:
-          - protocol: http
-            load_balancer_port: 80
-            instance_port: 80
-        
+        wait_timeout: 200
+        wait: True
+      register: elb_TG_information
+
+    - debug: 
+        var: elb_TG_information
+
+    - elb_application_lb:
+      name: "{{name}}-elb"
+      security_groups: "{{app_lb_sg_information.group_id}}"
+      subnets:
+        - "{{prisub01id}}"
+        - "{{prisub02id}}"
+        - "{{prisub03id}}"
+      listeners:
+        - Protocol: HTTP 
+          Port: 80 
+          SslPolicy: ELBSecurityPolicy-2015-05
+          # Certificates: 
+          #   - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
+          DefaultActions:
+            - Type: forward # Required.
+              TargetGroupName: "{{name}}-elb-TG"
+      state: present
+      register: elb_information
+
+    - debug: 
+        var: elb_information
+
+
+    
     - name: Insert /update Hosts IP & Name in file provision-stack/group-vars/hostips
       blockinfile:
         path: provision-stack/group-vars/hostips
