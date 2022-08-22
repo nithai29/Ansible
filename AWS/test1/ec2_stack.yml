@@ -153,6 +153,10 @@
         exact_count: 1
       register: mc01_host_information
 
+    - name: Display mc01_host_information 
+      debug: 
+        var: mc01_host_information
+
     - name: creating RabbitMQ host rmq01
       ec2_instance:
         key_name: "{{keypair_name}}"
