@@ -113,7 +113,7 @@
 
     - name: Display web01_host_information 
       debug: 
-        var: web01_host_information
+        var: web01_host_information.instances[0].instance_id
 
     - name: creating Tomcat host app01
       ec2_instance:
