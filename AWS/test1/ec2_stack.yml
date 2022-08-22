@@ -226,6 +226,7 @@
       elb_target_group:
         name: "{{name}}-elb-TG"
         region: "{{region}}"
+        modify_targets: no
         protocol: http
         port: 81
         vpc_id: "{{vpcid}}"
