@@ -236,8 +236,8 @@
           - Id: "{{web01_host_information.instances[0].instance_id}}"
             Port: 80
         state: present
-        wait_timeout: 200
-        wait: True
+        # wait_timeout: 200
+        # wait: True
       register: elb_TG_information
 
     - debug: 
