@@ -228,7 +228,7 @@
         health_check_path: /
         successful_response_codes: "200,250-260"
         targets:
-          - Id: "{{web01_host_information.instance_ids}}"
+          - Id: "{{web01_host_information.instance_id}}"
             Port: 80
         state: present
         wait_timeout: 200
