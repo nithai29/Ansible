@@ -256,7 +256,7 @@
         listeners:
           - Protocol: HTTP 
             Port: 80 
-            SslPolicy: ELBSecurityPolicy-2015-05
+            # SslPolicy: ELBSecurityPolicy-2015-05
             # Certificates: 
             #   - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
             DefaultActions:
