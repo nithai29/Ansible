@@ -68,3 +68,4 @@
         copy:
           content: "bastion_keypair: {{keypair_output.key.name}}\nbastion_ec2_sg: {{bastion_sg_information.group_id}}\nbastion_host_id: {{ Bastion_host_information.instance_ids }}"
           dest: vars/bastion_output_vars
+        when: Bastion_host_information.changed
