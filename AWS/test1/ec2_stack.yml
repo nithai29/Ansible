@@ -112,7 +112,7 @@
       register: web01_host_information
 
     - debug: Display web01_host_information 
-        var: "{{web01_host_information}}"
+        var: web01_host_information
 
     - name: creating Tomcat host app01
       ec2_instance:
