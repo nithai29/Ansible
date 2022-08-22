@@ -203,25 +203,7 @@
 
     # - debug:
     #     var: ec2_instance_information
-
-    # - local_action:
-    #     module: ec2_elb_lb
-    #     name: "{{name}}-elb" 
-    #     region: "{{region}}"
-    #     state: present
-    #     instance_ids:
-    #       - "{{web01_host_information.instance_ids}}"
-    #     purge_instance_ids: true
-    #     security_group_ids: "{{app_lb_sg_information.group_id}}"
-    #     subnets:
-    #       - "{{prisub01id}}"
-    #       - "{{prisub02id}}"
-    #       - "{{prisub03id}}"
-    #     listeners:
-    #       - protocol: http
-    #         load_balancer_port: 80
-    #         instance_port: 80
-
+    
     - name: Create a target group with instance targets
       elb_target_group:
         name: "{{name}}-elb-TG"
