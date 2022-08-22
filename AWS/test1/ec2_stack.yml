@@ -239,6 +239,7 @@
         state: present
         # wait_timeout: 200
         # wait: True
+      when: web01_host_information.changed
       register: elb_TG_information
 
     - debug: 
