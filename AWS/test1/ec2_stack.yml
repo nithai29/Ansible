@@ -92,7 +92,7 @@
           Team: "{{team}}"
       register: app_sg_update_information
 
-    - name: creating Nginx host
+    - name: creating Nginx host web01
       ec2_instance:
         key_name: "{{keypair_name}}"
         instance_type: "{{ ec2_type }}"
@@ -110,6 +110,9 @@
           Team: "{{team}}"
         exact_count: 1
       register: web01_host_information
+
+    - debug: Display web01_host_information 
+        var: "{{web01_host_information}}"
 
     - name: creating Tomcat host app01
       ec2_instance:
