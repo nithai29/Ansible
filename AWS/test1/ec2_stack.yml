@@ -203,7 +203,7 @@
 
     # - debug:
     #     var: ec2_instance_information
-    
+
     - name: Create a target group with instance targets
       elb_target_group:
         name: "{{name}}-elb-TG"
@@ -224,8 +224,8 @@
       when: web01_host_information.changed
       register: elb_TG_information
 
-    - debug: 
-        var: elb_TG_information
+    # - debug: 
+    #     var: elb_TG_information
 
     - name: Create a Application load balancer with instance targets
       elb_application_lb:
@@ -248,8 +248,8 @@
         state: present
       register: elb_information
 
-    - debug: 
-        var: elb_information
+    # - debug: 
+    #     var: elb_information
 
 
     

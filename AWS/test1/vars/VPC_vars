@@ -7,7 +7,7 @@ region: us-east-1
 state: "present"
 
 # Tags:
-name: vprofile
+name: vpc-ue1-test-vprofile
 service: Application
 env: "testing"
 res_owner: "Nithai Karingula"
