@@ -209,7 +209,7 @@
     #         instance_port: 80
 
     - name: Create a target group with instance targets
-      community.aws.elb_target_group:
+      elb_target_group:
         name: "{{name}}-elb-TG"
         protocol: http
         port: 81
@@ -228,23 +228,24 @@
     - debug: 
         var: elb_TG_information
 
-    - elb_application_lb:
-      name: "{{name}}-elb"
-      security_groups: "{{app_lb_sg_information.group_id}}"
-      subnets:
-        - "{{prisub01id}}"
-        - "{{prisub02id}}"
-        - "{{prisub03id}}"
-      listeners:
-        - Protocol: HTTP 
-          Port: 80 
-          SslPolicy: ELBSecurityPolicy-2015-05
-          # Certificates: 
-          #   - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
-          DefaultActions:
-            - Type: forward # Required.
-              TargetGroupName: "{{name}}-elb-TG"
-      state: present
+    - name: Create a Application load balancer with instance targets
+      elb_application_lb:
+        name: "{{name}}-elb"
+        security_groups: "{{app_lb_sg_information.group_id}}"
+        subnets:
+          - "{{prisub01id}}"
+          - "{{prisub02id}}"
+          - "{{prisub03id}}"
+        listeners:
+          - Protocol: HTTP 
+            Port: 80 
+            SslPolicy: ELBSecurityPolicy-2015-05
+            # Certificates: 
+            #   - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
+            DefaultActions:
+              - Type: forward # Required.
+                TargetGroupName: "{{name}}-elb-TG"
+        state: present
       register: elb_information
 
     - debug: 
