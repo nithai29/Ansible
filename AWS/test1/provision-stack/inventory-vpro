@@ -1,0 +1,64 @@
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAvXHb4hfBU6vHs2ThFgaWJLkPArak1ruxFazs1Eo1oz5uTleL
+5dwGG+3wHB76y+upWOSbmrrsPAN6GCxuId5XCYp+uUG6GS3OZyjbza/vKwx6zDuG
+O7tVHR7TVBQeNJXVmSF7W8Rdamjor1rkzX/sVO+c6c74yrTjU+tfiTpDA6gT5ATT
+C8JH21Cr4sIw3COtw7ebV8dq2XTask12Sx6ays7PZHwQs/mzlrwzuPT5AP53jFG7
+EHUNSLlbchIJugCf4D+QSzxa2kyuNixhIMMoCv3OPI+Kr4MzoYfVWhihsg6u6/25
+FCnghXAANioq2s0aDOB705h764MBKz4HJlDxgQIDAQABAoIBAAV137Gfn6nqvKHW
+GYrJ+8/pKZ6ZZxztYghO6LChxvQCm6lUaqrgcaiibhZRakcwbrwqMrX+B0sfiohh
+13bQcs/KlyZ914BcSqO8kMFX/dvOy0dRu+fC2YwyVEMLJWe8neCBD44wlcS4a2SK
+iSfHNSeplGtE1PT6y8aidSl+bWoQhFvfbjeF7JjOlSnuWcE1hYwL174tGTbfFuML
+L4aqfyMCtC/+eiJ8t4H0Aoq2R1pyPX0wm7F3zIgDXzOLiiDRF3IvEj1mvM+IFunN
+Toq/83leW43l6ZQ39eJyzWMuYuVj0pQMciV3GLhzSGWZNLBst62rXtkhBIS7cNDi
+REbpGbECgYEA+1A+v3Pf6dPsXZ83lpJrbRXO6AeGfnXvus2/5d/dTDdolbmVmzfu
+K/5Tl7ZiRDVC25zv+HameDY2oTlX5+tAvtG1DFsXXrZym3u7pFrTFZybYCOVrg9G
+Rs4oyF+j0LbIfeKuEP4dg2FH2mtq4bPIDy5VWHnAqoqVGtF2TNHa6R0CgYEAwPpB
+qPG3QVWy6YB004ml/YTtvknFI6+Boj8STEWTuw9JmniIHllfJah3Lbu4PKAmaKZS
+mPxDrEWdiBcEcSzFiRDpDUryaB05jjP5KS7DueRyS+lYQW+l8LNLjs9kIwCY/9wL
+MRw/1jkphgc+XaqOT8wbIJKlC40dZL+Lq4i4oLUCgYAxwkGqRpcfBQbXwp6PAY6j
+mp3M8zB9+Xvt0K8eJKT8Yjwi6QvmH7zYmRKUB1iNiL4kHX6mA1gSlSlb4q61DK9V
+GNBwEdket6EZh/YvJIyGyus4rdMFE6Emg8svYUBeItKvmiI82xOc37YKWRpgdeg2
+mUXsrq6nFalQFgkGTMa7QQKBgGBiXjsgh3QVdqfTpgYl4QcvxoLdW56IQUolEGGR
++shaSVviybHG15P6gZQRB2MYZjaso+KPVMmNd7IKNQjF4N+l15DxFwPTXPTelprw
+JYgKRuANayw7tHj1RE7O3Ofym3hnkht0TZoUsN2lbovf7PaELiRluhN75ut0FDGX
+twdlAoGBAPEDNbvuv4clXQZKt/Y3+ZjlJdmSvncDzknmKVNQQOp76I2F13SG35PX
+VTrYVO5ji7I/sWSBXaub7sid4+8Oa8k0ipuLZ9fb1mnDPTSR74hUoBREAl/k7HQf
+oOb0Bx0KWzsda8tD2ZQShizPStkyZXWjCsLq7I+o0fSlkSxaZnTV
+-----END RSA PRIVATE KEY-----
+# BEGIN ANSIBLE MANAGED BLOCK
+web01  ansible_host= 10.0.3.119
+app01 ansible_host= 10.0.3.219
+mc01 ansible_host= 10.0.3.37
+rmq01 ansible_host= 10.0.3.19 
+db01 ansible_host= 10.0.3.134
+cntl ansible_host= 127.0.0.0 ansible_connection=local
+
+[websrvgrp]
+web01
+
+[appsrvgrp]
+app01
+
+[mcsrvgrp]
+mc01
+
+[rmqsrvgrp]
+rmp01
+
+[dbsrvgrp]
+db01
+
+[control]
+web01
+
+[stack_inst:children]
+websrvgrp
+appsrvgrp
+mcsrvgrp
+rmqsrvgrp
+dbsrvgrp
+
+[stack_inst:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file="vprostack.pem"
+# END ANSIBLE MANAGED BLOCK
