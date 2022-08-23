@@ -13,7 +13,7 @@
 
     - name: create a new key pair, return generated private key
       ec2_key:
-        name: "{{keypair_name}}"
+        name: "{{ keypair_name }}"
         region: "{{region}}"
       register: ec2_keypair_output
       
@@ -94,7 +94,7 @@
 
     - name: creating Nginx host web01
       ec2_instance:
-        key_name: "{{keypair_name}}"
+        key_name: "{{ keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
@@ -117,7 +117,7 @@
 
     - name: creating Tomcat host app01
       ec2_instance:
-        key_name: "{{keypair_name}}"
+        key_name: "{{ keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
@@ -136,7 +136,7 @@
 
     - name: creating Memcached host mc01
       ec2_instance:
-        key_name: "{{keypair_name}}"
+        key_name: "{{ keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
@@ -159,7 +159,7 @@
 
     - name: creating RabbitMQ host rmq01
       ec2_instance:
-        key_name: "{{keypair_name}}"
+        key_name: "{{ keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
@@ -178,7 +178,7 @@
 
     - name: creating MYSQL host db01
       ec2_instance:
-        key_name: "{{keypair_name}}"
+        key_name: "{{ keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
