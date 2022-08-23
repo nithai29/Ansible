@@ -258,17 +258,17 @@
     - name: Insert /update Hosts IP & Name in file provision-stack/group-vars/hostips
       blockinfile:
         path: provision-stack/group-vars/hostips
-        block:
-          web01_ip: "{{ web01_host_information.instances[0].instance_id }}"
-          app01_ip: "{{ app01_host_information.instances[0].instance_id }}"
-          mc01_ip: "{{ mc01_host_information.instances[0].instance_id }}"
-          rmq01_ip: "{{ rmq01_host_information.instances[0].instance_id }}"
-          db01_ip: "{{ db01_host_information.instances[0].instance_id }}"
+        block: |
+          web01_ip: {{ web01_host_information.instances[0].private_ip_address }}
+          app01_ip: {{ app01_host_information.instances[0].private_ip_address }}
+          mc01_ip: {{ mc01_host_information.instances[0].private_ip_address }}
+          rmq01_ip: {{ rmq01_host_information.instances[0].private_ip_address }}
+          db01_ip: {{ db01_host_information.instances[0].private_ip_address }}
 
     - name: Copy key to provision-stack directory
       copy:
         src: "keys/{{keypair_name}}.pem"
-        dest: provision-stack/inventory-vpro
+        dest: provision-stack/keypair-vpro.pem
         mode: '0400'
 
     - name: Insert /update Hosts IP & Name in file provision-stack/group-vars/hostips
