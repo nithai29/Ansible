@@ -1,3 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
-{'web01_ip': 'i-038d77cda02357243', 'app01_ip': 'i-0c9a1c502283fc0b3', 'mc01_ip': 'i-0fc62dc494edb3292', 'rmq01_ip': 'i-0f30902517c7605ba', 'db01_ip': 'i-0d51f9f4b56448904'}
+web01_ip: 10.0.3.235
+app01_ip: 10.0.3.7
+mc01_ip: 10.0.3.209
+rmq01_ip: 10.0.3.184
+db01_ip: 10.0.3.12
 # END ANSIBLE MANAGED BLOCK
