@@ -1,0 +1,39 @@
+---
+- name: Build Artifact ROOT.war & SQL file to be copied in files/directory
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install jdk, maven, git
+      apt: 
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - git
+        - openjdk-8-jdk
+        - maven
+
+    - name: clone Source code from github
+      git:
+        repo: 'https://github.com/nithai29/vprofile-project.git'
+        dest: ./Vprofile-repo
+        version: vp-rem
+      register: git_status
+
+    - name: mvn Install command to build artifact
+      command: "mvn install"
+      args:
+        chdir: Vprofile-repo
+      when: git_status.changed
+      register: mvn_info
+
+    - name: copy artifact to files directory
+      copy:
+        src: "{{ item }}"
+        dest: files/ROOT.war
+      with_fileglob: Vprofile-repo/target/*.war
+
+    - name: Copy SQL file to files directory
+      copy:
+        src: Vprofile-repo/src/main/resource/db_backup.sql
+        dest: files/db_backup.sql
