@@ -1,0 +1,58 @@
+---
+- name: Setup dbserver
+  hosts: dbsrvgrp
+  gather_facts: no
+  tasks:
+    - name: Installing MYSQL Service and dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+        cache_valid_time: 86400
+      loop: 
+        - mysql-server
+        - mysql-client
+        - python-mysqldb
+        - python3-mysqldb
+        - libmysqlclient-dev
+      ignore_errors: yes
+      tags:
+        - package
+      
+    - name: start and enable mysql Service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+      tags: 
+        - svc
+
+    - name: creating mysql user
+      mysql_user:
+        name: "{{ dbuser }}"
+        password: "{{ dbpass }}"
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+
+    - name: creating accounts DB
+      mysql_db:
+        name: "{{ dbname }}"
+        state: present
+      
+    - name: enable remote login to mysql svc
+      lineinfile:
+        path: /etc/mysql/mysql.conf.d/mysql.cnf
+        regex: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+        backup: yes
+      notify:
+        - Restart_mysql
+      tags:
+        - conf
+
+  handlers:
+    - name: Restart_mysql
+      service:
+        name: mysql
+        state: restarted  

@@ -17,7 +17,7 @@ app01
 mc01
 
 [rmqsrvgrp]
-rmp01
+rmq01
 
 [dbsrvgrp]
 db01

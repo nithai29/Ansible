@@ -281,12 +281,12 @@
       blockinfile:
         path: provision-stack/inventory-vpro
         block: |
-          web01  ansible_host= {{ web01_host_information.instances[0].private_ip_address }}
-          app01 ansible_host= {{ app01_host_information.instances[0].private_ip_address }}
-          mc01 ansible_host= {{ mc01_host_information.instances[0].private_ip_address }}
-          rmq01 ansible_host= {{ rmq01_host_information.instances[0].private_ip_address }} 
-          db01 ansible_host= {{ db01_host_information.instances[0].private_ip_address }}
-          cntl ansible_host= 127.0.0.0 ansible_connection=local
+          web01 ansible_host={{ web01_host_information.instances[0].private_ip_address }}
+          app01 ansible_host={{ app01_host_information.instances[0].private_ip_address }}
+          mc01 ansible_host={{ mc01_host_information.instances[0].private_ip_address }}
+          rmq01 ansible_host={{ rmq01_host_information.instances[0].private_ip_address }} 
+          db01 ansible_host={{ db01_host_information.instances[0].private_ip_address }}
+          cntl ansible_host=127.0.0.0 ansible_connection=local
 
           [websrvgrp]
           web01
@@ -298,7 +298,7 @@
           mc01
 
           [rmqsrvgrp]
-          rmp01
+          rmq01
 
           [dbsrvgrp]
           db01
