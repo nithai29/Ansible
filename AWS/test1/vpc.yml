@@ -10,33 +10,33 @@
 
       - name: Create the VPC
         ec2_vpc_net:
-          name: "VPC_{{name}}"
-          cidr_block: "{{vpc_cidr_block}} "
-          region: "{{region}}"
+          name: "VPC-{{ name }}"
+          cidr_block: "{{ vpc_cidr_block }}"
+          region: "{{ region }}"
           dns_support: yes
           dns_hostnames: yes
           tenancy: default
-          state: "{{state}}"
+          state: "{{ state }}"
           tags:
-            Name: "VPC_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "VPC-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: vpc_information
       
       - name: Create public subnet 01
         ec2_vpc_subnet:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          az: "{{zone1}}"
-          cidr: "{{pubsub01_cidr}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          az: "{{ zone1 }}"
+          cidr: "{{ pubsub01_cidr }}"
+          state: "{{ state }}"
           map_public: yes
           tags:
-            Name: "pubsub01_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "pubsub01-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: pubsub01_information
 
       # - debug:
@@ -44,134 +44,131 @@
 
       - name: Create public subnet 02
         ec2_vpc_subnet:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          az: "{{zone2}}"
-          cidr: "{{pubsub02_cidr}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          az: "{{ zone2 }}"
+          cidr: "{{ pubsub02_cidr }}"
+          state: "{{ state }}"
           map_public: yes
           tags:
-            Name: "pubsub02_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "pubsub02-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: pubsub02_information
 
       - name: Create public subnet 03
         ec2_vpc_subnet:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          az: "{{zone3}}"
-          cidr: "{{pubsub03_cidr}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          az: "{{ zone3 }}"
+          cidr: "{{ pubsub03_cidr }}"
+          state: "{{ state }}"
           map_public: yes
           tags:
-            Name: "pubsub03_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "pubsub03-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: pubsub03_information
 
       - name: Create private subnet 01
         ec2_vpc_subnet:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          az: "{{zone1}}"
-          cidr: "{{prisub01_cidr}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          az: "{{ zone1 }}"
+          cidr: "{{ prisub01_cidr }}"
+          state: "{{ state }}"
           tags:
-            Name: "prisub01_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "prisub01-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: prisub01_information
 
       - name: Create private subnet 02
         ec2_vpc_subnet:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          az: "{{zone2}}"
-          cidr: "{{prisub02_cidr}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          az: "{{ zone2 }}"
+          cidr: "{{ prisub02_cidr }}"
+          state: "{{ state }}"
           tags:
-            Name: "prisub02_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "prisub02-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: prisub02_information
 
       - name: Create private subnet 03
         ec2_vpc_subnet:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          az: "{{zone3}}"
-          cidr: "{{prisub03_cidr}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          az: "{{ zone3 }}"
+          cidr: "{{ prisub03_cidr }}"
+          state: "{{ state }}"
           tags:
-            Name: "prisub03_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "prisub03-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: prisub03_information
 
       - name: create Internet Gateway
         ec2_vpc_igw:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          state: "{{ state }}"
           tags:
-            Name: "IGW_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "IGW-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
         register: igw_information
 
       - name: Creating public Route table
         ec2_vpc_route_table:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          state: "{{ state }}"
           tags:
-            Name: "public_RT_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "public-RT-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
           subnets:
-            - "{{pubsub01_information.subnet.cidr_block}}"
-            - "{{pubsub02_information.subnet.cidr_block}}"
-            - "{{pubsub03_information.subnet.cidr_block}}"
+            - "{{ pubsub01_information.subnet.cidr_block }}"
+            - "{{ pubsub02_information.subnet.cidr_block }}"
+            - "{{ pubsub03_information.subnet.cidr_block }}"
           routes:
             - dest: 0.0.0.0/0
-              gateway_id: "{{igw_information.gateway_id}}"
+              gateway_id: "{{ igw_information.gateway_id }}"
         register: publicRT_information
 
       - name: Create new nat gateway and allocate new EIP if a nat gateway does not yet exist in the subnet.
         ec2_vpc_nat_gateway:
-          state: "{{state}}"
+          state: "{{ state }}"
           subnet_id: "{{pubsub02_information.subnet.id}}"
           wait: true
-          region: "{{region}}"
+          region: "{{ region }}"
           tags:
-            Name: "NAT_gateway_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "NAT-gateway-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
           if_exist_do_not_create: true
         register: nat_gateway_information
 
-      # - debug: 
-      #     var: nat_gateway_information
-
       - name: Creating private Route table
         ec2_vpc_route_table:
-          vpc_id: "{{vpc_information.vpc.id}}"
-          region: "{{region}}"
-          state: "{{state}}"
+          vpc_id: "{{ vpc_information.vpc.id }}"
+          region: "{{ region }}"
+          state: "{{ state }}"
           tags:
-            Name: "private_RT_{{name}}"
-            Environment: "{{env}}"
-            Resource owner: "{{res_owner}}"
-            Team: "{{team}}"
+            Name: "private-RT-{{ name }}"
+            Environment: "{{ env }}"
+            Resource owner: "{{ res_owner }}"
+            Team: "{{ team }}"
           subnets:
             - "{{prisub01_information.subnet.cidr_block}}"
             - "{{prisub02_information.subnet.cidr_block}}"

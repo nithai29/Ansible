@@ -22,14 +22,14 @@
       
     - name: Download the keypair
       copy:
-        content: "{{ec2_keypair_output.key.private_key}}"
-        dest: "keys/{{ec2_keypair_name}}.pem"
+        content: "{{ ec2_keypair_output.key.private_key }}"
+        dest: "keys/{{ ec2_keypair_name }}.pem"
         mode: 0400
       when: ec2_keypair_output.changed
 
     - name: security group for Load Balancer
       ec2_group:
-        name: "alb_sg_{{ name }}"
+        name: "alb-sg-{{ name }}"
         description: allow http traffic from anywhere
         region: "{{ region }}"
         vpc_id: "{{ vpcid }}"
@@ -40,7 +40,7 @@
             cidr_ip: 0.0.0.0/0
             rule_desc: allow http traffic from anywhere
         tags:
-          Name: "alb_sg_{{ name }}"
+          Name: "alb-sg-{{ name }}"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
           Team: "{{ team }}"
@@ -48,7 +48,7 @@
 
     - name: security group for Vprofile stack
       ec2_group:
-        name: "app_sg_{{ name }}"
+        name: "app-sg-{{ name }}"
         description: allow ssh traffic from everywhere and all ports within sg
         region: "{{ region }}"
         vpc_id: "{{ vpcid }}"
@@ -65,7 +65,7 @@
             group_id: "{{bastion_ec2_sg}}"
             rule_desc: allow ssh traffic from my IP
         tags:
-          Name: "app_sg_{{ name }}"
+          Name: "app-sg-{{ name }}"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
           Team: "{{ team }}"
@@ -79,17 +79,17 @@
 
     - name: updating Vprofile stack security group with itself. 
       ec2_group:
-        name:  "app_sg_{{ name }}"
+        name:  "app-sg-{{ name }}"
         description: allow ssh traffic from everywhere and all ports within sg
         region: "{{ region }}"
         vpc_id: "{{ vpcid }}"
         purge_rules: no
         rules:
           - proto: all
-            group_id: "{{app_sg_information.group_id}}"
+            group_id: "{{ app_sg_information.group_id }}"
             rule_desc: allow all traffic within the group
         tags:
-          Name: "app_sg_{{ name }}"
+          Name: "app-sg-{{ name }}"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
           Team: "{{ team }}"
@@ -99,14 +99,14 @@
       ec2_instance:
         key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
-        image_id: "{{ami}}"
+        image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
-        security_group: "{{app_sg_information.group_id}}"
+        security_group: "{{ app_sg_information.group_id }}"
         region: "{{ region }}"
         vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "ec2_{{ name }}_web01"
+          Name: "ec2-{{ name }}-web01"
           Service: "Web Server"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
@@ -122,14 +122,14 @@
       ec2_instance:
         key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
-        image_id: "{{ami}}"
+        image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
-        security_group: "{{app_sg_information.group_id}}"
+        security_group: "{{ app_sg_information.group_id }}"
         region: "{{ region }}"
         vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "ec2_{{ name }}_app01"
+          Name: "ec2-{{ name }}-app01"
           Service: "App Server"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
@@ -141,14 +141,14 @@
       ec2_instance:
         key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
-        image_id: "{{ami}}"
+        image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
-        security_group: "{{app_sg_information.group_id}}"
+        security_group: "{{ app_sg_information.group_id }}"
         region: "{{ region }}"
         vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "ec2_{{ name }}_mc01"
+          Name: "ec2-{{ name }}-mc01"
           Service: "Memcached Server"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
@@ -156,22 +156,22 @@
         exact_count: 1
       register: mc01_host_information
 
-    - name: Display mc01_host_information 
-      debug: 
-        var: mc01_host_information
+    # - name: Display mc01_host_information 
+    #   debug: 
+    #     var: mc01_host_information
 
     - name: creating RabbitMQ host rmq01
       ec2_instance:
         key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
-        image_id: "{{ami}}"
+        image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
-        security_group: "{{app_sg_information.group_id}}"
+        security_group: "{{ app_sg_information.group_id }}"
         region: "{{ region }}"
         vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "ec2_{{ name }}_rmq01"
+          Name: "ec2-{{ name }}-rmq01"
           Service: "RabbitMQ Server"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
@@ -183,14 +183,14 @@
       ec2_instance:
         key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
-        image_id: "{{ami}}"
+        image_id: "{{ ami }}"
         wait: yes
         wait_timeout: 300
-        security_group: "{{app_sg_information.group_id}}"
+        security_group: "{{ app_sg_information.group_id }}"
         region: "{{ region }}"
         vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "ec2_{{ name }}_db01"
+          Name: "ec2-{{ name }}-db01"
           Service: "MYSQL Server"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
@@ -210,7 +210,7 @@
 
     - name: Create a target group with instance targets
       elb_target_group:
-        name: "alb_TG_{{ name }}"
+        name: "alb-TG-{{ name }}"
         region: "{{ region }}"
         modify_targets: no
         protocol: http
@@ -220,13 +220,13 @@
         health_check_path: /
         successful_response_codes: "200,250-260"
         targets:
-          - Id: "{{web01_host_information.instances[0].instance_id}}"
+          - Id: "{{ web01_host_information.instances[0].instance_id }}"
             Port: 80
         state: present
         # wait_timeout: 200
         # wait: True
         tags:
-          Name: "alb_TG_{{ name }}"
+          Name: "alb-TG-{{ name }}"
           Service: "ALB target group"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
@@ -239,7 +239,7 @@
 
     - name: Create a Application load balancer with instance targets
       elb_application_lb:
-        name: "alb_{{ name }}"
+        name: "alb-{{ name }}"
         region: "{{ region }}"
         security_groups: "{{app_lb_sg_information.group_id}}"
         subnets:
@@ -251,9 +251,9 @@
             Port: 80 
             DefaultActions:
               - Type: forward # Required.
-                TargetGroupName: "alb_TG_{{ name }}"
+                TargetGroupName: "alb-TG-{{ name }}"
         tags:
-          Name: "alb_{{ name }}"
+          Name: "alb-{{ name }}"
           Service: "ALB target group"
           Environment: "{{ env }}"
           Resource owner: "{{ res_owner }}"
@@ -273,7 +273,7 @@
 
     - name: Copy key to provision-stack directory
       copy:
-        src: "keys/{{ec2_keypair_name}}.pem"
+        src: "keys/{{ ec2_keypair_name }}.pem"
         dest: provision-stack/keypair-vpro.pem
         mode: '0400'
 
@@ -315,5 +315,5 @@
 
           [stack_inst:vars]
           ansible_user=ubuntu
-          ansible_ssh_private_key_file="{{ec2_keypair_name}}.pem"
+          ansible_ssh_private_key_file="{{ ec2_keypair_name }}.pem"
           
