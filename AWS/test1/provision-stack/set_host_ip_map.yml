@@ -1,0 +1,20 @@
+---
+
+- name: Set host to IP mapping in /etc/hosts file in all servers
+  hosts: all
+  gather_facts: false
+  become: True
+  tasks:
+    - name: Import VPC setup variables
+      include_vars: group_vars/hostips
+
+    - name: Update hosts file for all hosts
+      blockinfile:
+        path: /etc/hosts
+        block: |
+          {{web01_ip}} web01
+          {{app01_ip}} app01
+          {{rmq01_ip}} rmq01
+          {{mc01_ip}} mc01
+          {{db01_ip}} db01
+
