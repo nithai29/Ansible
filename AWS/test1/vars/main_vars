@@ -1,0 +1,17 @@
+# Region Information
+region: us-east-1
+state: "present"
+
+# MYIP Information
+myIP: 98.47.2.239/32
+
+# Tags:
+name: ue1-test-vprofile
+service: vprofile
+env: "testing"
+res_owner: "Nithai Karingula"
+team: "Devops"
+
+# ec2 Information
+ec2_type: "t2.micro"
+ec2_keypair_name: vprostack

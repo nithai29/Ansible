@@ -2,12 +2,15 @@
   - hosts: localhost
     gather_facts: false
     tasks:
+      - name: Import main variables 
+        include_vars: vars/main_vars
+
       - name: Import VPC variables
-        include_vars: vars/VPC_vars
+        include_vars: vars/VPC_vars      
 
       - name: Create the VPC
         ec2_vpc_net:
-          name: "{{name}}_VPC"
+          name: "VPC_{{name}}"
           cidr_block: "{{vpc_cidr_block}} "
           region: "{{region}}"
           dns_support: yes
@@ -15,7 +18,7 @@
           tenancy: default
           state: "{{state}}"
           tags:
-            Name: "{{name}}_VPC"
+            Name: "VPC_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -30,7 +33,7 @@
           state: "{{state}}"
           map_public: yes
           tags:
-            Name: "{{name}}_pubsub01"
+            Name: "pubsub01_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -48,7 +51,7 @@
           state: "{{state}}"
           map_public: yes
           tags:
-            Name: "{{name}}_pubsub02"
+            Name: "pubsub02_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -63,7 +66,7 @@
           state: "{{state}}"
           map_public: yes
           tags:
-            Name: "{{name}}_pubsub03"
+            Name: "pubsub03_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -77,7 +80,7 @@
           cidr: "{{prisub01_cidr}}"
           state: "{{state}}"
           tags:
-            Name: "{{name}}_prisub01"
+            Name: "prisub01_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -91,7 +94,7 @@
           cidr: "{{prisub02_cidr}}"
           state: "{{state}}"
           tags:
-            Name: "{{name}}_prisub02"
+            Name: "prisub02_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -105,7 +108,7 @@
           cidr: "{{prisub03_cidr}}"
           state: "{{state}}"
           tags:
-            Name: "{{name}}_prisub03"
+            Name: "prisub03_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -117,7 +120,7 @@
           region: "{{region}}"
           state: "{{state}}"
           tags:
-            Name: "{{name}}_IGW"
+            Name: "IGW_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -129,7 +132,7 @@
           region: "{{region}}"
           state: "{{state}}"
           tags:
-            Name: "{{name}}_public_RT"
+            Name: "public_RT_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"
@@ -148,11 +151,11 @@
           subnet_id: "{{pubsub02_information.subnet.id}}"
           wait: true
           region: "{{region}}"
-          # resource_tags:
-          #   Name: "{{name}}_NAT_gateway"
-          #   Environment: "{{env}}"
-          #   Resource owner: "{{res_owner}}"
-          #   Team: "{{team}}"
+          tags:
+            Name: "NAT_gateway_{{name}}"
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
           if_exist_do_not_create: true
         register: nat_gateway_information
 
@@ -165,7 +168,7 @@
           region: "{{region}}"
           state: "{{state}}"
           tags:
-            Name: "Nithai_private_RT"
+            Name: "private_RT_{{name}}"
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"
             Team: "{{team}}"

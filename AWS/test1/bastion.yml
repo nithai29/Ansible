@@ -2,6 +2,9 @@
   - hosts: localhost
     gather_facts: false
     tasks:
+      - name: Import main variables 
+        include_vars: vars/main_vars
+
       - name: Importing required variables
         include_vars: vars/bastion_vars
 
@@ -23,7 +26,7 @@
 
       - name: security group for bastion hosts
         ec2_group:
-          name: "{{bastion_sg}}"
+          name: "SG_{{name}}_{{host_name}}"
           description: "{{desc}}"
           region: "{{region}}"
           vpc_id: "{{vpcid}}"
@@ -34,7 +37,11 @@
               cidr_ip: "{{myIP}}"
               rule_desc: allow ssh traffic from my IP
           tags:
-            Name: "Bastion host SG"
+            Name: "SG_{{name}}_{{host_name}}"
+            Service: Security Group
+            Environment: "{{env}}"
+            Resource owner: "{{res_owner}}"
+            Team: "{{team}}"
         register: bastion_sg_information
 
       - name: creating bastion host
@@ -45,7 +52,6 @@
           wait: yes
           wait_timeout: 300
           security_group: "{{bastion_sg_information.group_id}}"
-          # count: 1
           region: "{{region}}"
           vpc_subnet_id: "{{pubsub01id}}"
           user_data: |
@@ -57,7 +63,7 @@
           network:
             assign_public_ip: true
           tags:
-            Name: Bastion Host
+            Name: "ec2_{{name}}_{{host_name}}"
             Service: Jump Server
             Environment: "{{env}}"
             Resource owner: "{{res_owner}}"

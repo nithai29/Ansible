@@ -2,34 +2,37 @@
 - hosts: localhost
   gather_facts: false
   tasks:
-    - name: Importing additional required variables
+    - name: Import main variables
+      include_vars: vars/main_vars
+
+    - name: Import additional required variables
       include_vars: vars/output_vars
     
-    - name: Importing additional required variables
+    - name: Import additional required variables
       include_vars: vars/bastion_output_vars
     
-    - name: Importing additional required variables
+    - name: Import additional required variables
       include_vars: vars/stack_vars
 
     - name: create a new key pair, return generated private key
       ec2_key:
-        name: "{{ keypair_name }}"
-        region: "{{region}}"
+        name: "{{ ec2_keypair_name }}"
+        region: "{{ region }}"
       register: ec2_keypair_output
       
     - name: Download the keypair
       copy:
         content: "{{ec2_keypair_output.key.private_key}}"
-        dest: "keys/{{keypair_name}}.pem"
+        dest: "keys/{{ec2_keypair_name}}.pem"
         mode: 0400
       when: ec2_keypair_output.changed
 
     - name: security group for Load Balancer
       ec2_group:
-        name: "{{name}}_lb_sg"
+        name: "alb_sg_{{ name }}"
         description: allow http traffic from anywhere
-        region: "{{region}}"
-        vpc_id: "{{vpcid}}"
+        region: "{{ region }}"
+        vpc_id: "{{ vpcid }}"
         rules:
           - proto: tcp
             from_port: 80
@@ -37,18 +40,18 @@
             cidr_ip: 0.0.0.0/0
             rule_desc: allow http traffic from anywhere
         tags:
-          Name: "{{name}} lb SG"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Name: "alb_sg_{{ name }}"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
       register: app_lb_sg_information
 
     - name: security group for Vprofile stack
       ec2_group:
-        name: "{{name}}_app_sg"
+        name: "app_sg_{{ name }}"
         description: allow ssh traffic from everywhere and all ports within sg
-        region: "{{region}}"
-        vpc_id: "{{vpcid}}"
+        region: "{{ region }}"
+        vpc_id: "{{ vpcid }}"
         rules:
           - proto: tcp
             from_port: 80
@@ -62,10 +65,10 @@
             group_id: "{{bastion_ec2_sg}}"
             rule_desc: allow ssh traffic from my IP
         tags:
-          Name: "{{name}} app SG"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Name: "app_sg_{{ name }}"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
       register: app_sg_information
 
     # - debug: 
@@ -76,80 +79,80 @@
 
     - name: updating Vprofile stack security group with itself. 
       ec2_group:
-        name:  "{{name}}_app_sg"
+        name:  "app_sg_{{ name }}"
         description: allow ssh traffic from everywhere and all ports within sg
-        region: "{{region}}"
-        vpc_id: "{{vpcid}}"
+        region: "{{ region }}"
+        vpc_id: "{{ vpcid }}"
         purge_rules: no
         rules:
           - proto: all
             group_id: "{{app_sg_information.group_id}}"
             rule_desc: allow all traffic within the group
         tags:
-          Name: "{{name}} app SG"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Name: "app_sg_{{ name }}"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
       register: app_sg_update_information
 
     - name: creating Nginx host web01
       ec2_instance:
-        key_name: "{{ keypair_name }}"
+        key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        region: "{{region}}"
-        vpc_subnet_id: "{{prisub01id}}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "Web01 Host"
+          Name: "ec2_{{ name }}_web01"
           Service: "Web Server"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
         exact_count: 1
       register: web01_host_information
 
-    - name: Display web01_host_information 
-      debug: 
-        var: web01_host_information.instances[0].instance_id
+    # - name: Display web01_host_information 
+    #   debug: 
+    #     var: web01_host_information.instances[0].instance_id
 
     - name: creating Tomcat host app01
       ec2_instance:
-        key_name: "{{ keypair_name }}"
+        key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        region: "{{region}}"
-        vpc_subnet_id: "{{prisub01id}}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "app01 Host"
-          Service: "Web Server"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Name: "ec2_{{ name }}_app01"
+          Service: "App Server"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
         exact_count: 1
       register: app01_host_information
 
     - name: creating Memcached host mc01
       ec2_instance:
-        key_name: "{{ keypair_name }}"
+        key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        region: "{{region}}"
-        vpc_subnet_id: "{{prisub01id}}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "mc01 Host"
+          Name: "ec2_{{ name }}_mc01"
           Service: "Memcached Server"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
         exact_count: 1
       register: mc01_host_information
 
@@ -159,39 +162,39 @@
 
     - name: creating RabbitMQ host rmq01
       ec2_instance:
-        key_name: "{{ keypair_name }}"
+        key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        region: "{{region}}"
-        vpc_subnet_id: "{{prisub01id}}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "rmq01 Host"
+          Name: "ec2_{{ name }}_rmq01"
           Service: "RabbitMQ Server"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
         exact_count: 1
       register: rmq01_host_information
 
     - name: creating MYSQL host db01
       ec2_instance:
-        key_name: "{{ keypair_name }}"
+        key_name: "{{ ec2_keypair_name }}"
         instance_type: "{{ ec2_type }}"
         image_id: "{{ami}}"
         wait: yes
         wait_timeout: 300
         security_group: "{{app_sg_information.group_id}}"
-        region: "{{region}}"
-        vpc_subnet_id: "{{prisub01id}}"
+        region: "{{ region }}"
+        vpc_subnet_id: "{{ prisub01id }}"
         tags:
-          Name: "db01 Host"
+          Name: "ec2_{{ name }}_db01"
           Service: "MYSQL Server"
-          Environment: "{{env}}"
-          Resource owner: "{{res_owner}}"
-          Team: "{{team}}"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
         exact_count: 1
       register: db01_host_information
     
@@ -202,20 +205,17 @@
       ec2_instance_info:
         region: "{{ region }}"
         filters:
-          vpc-id: "{{vpcid}}"
+          vpc-id: "{{ vpcid }}"
       register: ec2_instance_information
-
-    # - debug:
-    #     var: ec2_instance_information
 
     - name: Create a target group with instance targets
       elb_target_group:
-        name: "{{name}}-elb-TG"
-        region: "{{region}}"
+        name: "alb_TG_{{ name }}"
+        region: "{{ region }}"
         modify_targets: no
         protocol: http
         port: 81
-        vpc_id: "{{vpcid}}"
+        vpc_id: "{{ vpcid }}"
         health_check_protocol: http
         health_check_path: /
         successful_response_codes: "200,250-260"
@@ -225,6 +225,12 @@
         state: present
         # wait_timeout: 200
         # wait: True
+        tags:
+          Name: "alb_TG_{{ name }}"
+          Service: "ALB target group"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
       when: web01_host_information.changed
       register: elb_TG_information
 
@@ -233,28 +239,28 @@
 
     - name: Create a Application load balancer with instance targets
       elb_application_lb:
-        name: "{{name}}-elb"
-        region: "{{region}}"
+        name: "alb_{{ name }}"
+        region: "{{ region }}"
         security_groups: "{{app_lb_sg_information.group_id}}"
         subnets:
-          - "{{prisub01id}}"
-          - "{{prisub02id}}"
-          - "{{prisub03id}}"
+          - "{{ prisub01id }}"
+          - "{{ prisub02id }}"
+          - "{{ prisub03id }}"
         listeners:
           - Protocol: HTTP 
             Port: 80 
-            # SslPolicy: ELBSecurityPolicy-2015-05
-            # Certificates: 
-            #   - CertificateArn: arn:aws:iam::12345678987:server-certificate/test.domain.com
             DefaultActions:
               - Type: forward # Required.
-                TargetGroupName: "{{name}}-elb-TG"
+                TargetGroupName: "alb_TG_{{ name }}"
+        tags:
+          Name: "alb_{{ name }}"
+          Service: "ALB target group"
+          Environment: "{{ env }}"
+          Resource owner: "{{ res_owner }}"
+          Team: "{{ team }}"
         state: present
       register: elb_information
 
-    # - debug: 
-    #     var: elb_information
-    
     - name: Insert /update Hosts IP & Name in file provision-stack/group-vars/hostips
       blockinfile:
         path: provision-stack/group-vars/hostips
@@ -267,11 +273,11 @@
 
     - name: Copy key to provision-stack directory
       copy:
-        src: "keys/{{keypair_name}}.pem"
+        src: "keys/{{ec2_keypair_name}}.pem"
         dest: provision-stack/keypair-vpro.pem
         mode: '0400'
 
-    - name: Insert /update Hosts IP & Name in file provision-stack/group-vars/hostips
+    - name: Insert /update Hosts IP & Name in file provision-stack/inventory-vpro
       blockinfile:
         path: provision-stack/inventory-vpro
         block: |
@@ -309,5 +315,5 @@
 
           [stack_inst:vars]
           ansible_user=ubuntu
-          ansible_ssh_private_key_file="{{keypair_name}}.pem"
+          ansible_ssh_private_key_file="{{ec2_keypair_name}}.pem"
           
