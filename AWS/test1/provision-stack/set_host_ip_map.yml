@@ -2,11 +2,10 @@
 
 - name: Set host to IP mapping in /etc/hosts file in all servers
   hosts: all
-  gather_facts: false
-  become: True
+  # become: True
   tasks:
     - name: Import VPC setup variables
-      include_vars: group_vars/hostips
+      include_vars: group-vars/hostips
 
     - name: Update hosts file for all hosts
       blockinfile:
