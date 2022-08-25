@@ -1,0 +1,52 @@
+---
+- name: install Nginx service
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+        cache_valid_time: 86400
+      tags:
+        - package
+
+    - name: Start and enable nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+      tags:
+        - svc
+
+    - name: Disable nginx default website
+      file:
+        src: /etc/nginx/sites-enabled/default
+        state: absent
+      tags:
+        - conf
+
+    - name: Deploy web config files
+      template: 
+        src: templates/nginxvpro.j2
+        dest: /etc/nginx/sites-available/vproapp
+      tags:
+        - conf
+
+    - name: enable Application website
+      file:
+        src: /etc/nginx/sites-available/vproapp
+        dest: /etc/nginx/sites-enabled/vproapp
+        state: link
+      notify: 
+        - Restart_nginx
+      tags:
+        - conf
+
+  handlers:
+    - name: Restart_nginx
+      service:
+        name: nginx
+        state: restarted
+        
