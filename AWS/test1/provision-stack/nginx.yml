@@ -22,7 +22,7 @@
 
     - name: Disable nginx default website
       file:
-        src: /etc/nginx/sites-enabled/default
+        path: /etc/nginx/sites-enabled/default
         state: absent
       tags:
         - conf
@@ -49,4 +49,3 @@
       service:
         name: nginx
         state: restarted
-        
