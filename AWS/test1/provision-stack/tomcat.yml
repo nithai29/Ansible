@@ -73,7 +73,7 @@
         path: /usr/local/tomcat9
         owner: tomcat
         group: tomcat
-        rescurse: yes
+        recurse: yes
 
     - name: Setup tomcat SVC file on ubuntu 16 and 18
       template:
