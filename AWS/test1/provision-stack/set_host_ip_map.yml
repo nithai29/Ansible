@@ -19,6 +19,6 @@
 
     - name: updateing the servers
       apt:
-        name: *
+        name: '*'
         state: latest
         update_cache: yes
