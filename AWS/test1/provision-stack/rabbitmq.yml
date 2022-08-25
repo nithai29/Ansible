@@ -31,7 +31,7 @@
         - package
 
     - apt_repository:
-        repo: deb https://dl.bintray.com/rabbitmq-erlang/debian focal erlang-22.x
+        repo: deb https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server/deb/ubuntu bionic main
         state: present
       tags:
         - package
