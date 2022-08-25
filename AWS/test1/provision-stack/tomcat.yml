@@ -3,7 +3,7 @@
 
 - name: Setup Tomcat Application server
   hosts: localhost
-  gather_facts: no
+  # gather_facts: no
 
   vars: 
     timestamp: "{{ansible_date_time.date}}_{{ansible_date_time.hour}}_{{ansible_date_time.minute}}"
