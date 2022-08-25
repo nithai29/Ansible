@@ -53,7 +53,7 @@
  
     - name: untar the downloaded tomcat tar file.
       unarchive:
-        src: /tmp/apache-tomcat-9.0.62.tar.gz
+        src: /tmp/apache-tomcat-9.0.65.tar.gz
         dest: /tmp/tomcat9/
         remote_src: yes
         list_files: yes
