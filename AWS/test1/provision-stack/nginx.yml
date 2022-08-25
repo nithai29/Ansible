@@ -1,6 +1,6 @@
 ---
 - name: install Nginx service
-  hosts: localhost
+  hosts: websrvgrp
   gather_facts: no
   tasks:
     - name: install nginx
