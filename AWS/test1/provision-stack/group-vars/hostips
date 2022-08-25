@@ -1,7 +1,7 @@
 # BEGIN ANSIBLE MANAGED BLOCK
-web01_ip: 10.0.3.235
-app01_ip: 10.0.3.7
-mc01_ip: 10.0.3.209
-rmq01_ip: 10.0.3.184
-db01_ip: 10.0.3.12
+web01_ip: 10.0.3.25
+app01_ip: 10.0.3.236
+mc01_ip: 10.0.3.63
+rmq01_ip: 10.0.3.13
+db01_ip: 10.0.3.168
 # END ANSIBLE MANAGED BLOCK
