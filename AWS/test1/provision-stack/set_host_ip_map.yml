@@ -17,3 +17,8 @@
           {{mc01_ip}} mc01
           {{db01_ip}} db01
 
+    - name: updateing the servers
+      apt:
+        name: *
+        state: latest
+        update_cache: yes
