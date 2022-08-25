@@ -2,7 +2,7 @@
 # Installing tomcat
 
 - name: Setup Tomcat Application server
-  hosts: localhost
+  hosts: appsrvgrp
   # gather_facts: no
 
   vars: 

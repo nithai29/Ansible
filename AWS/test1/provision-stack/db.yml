@@ -1,6 +1,6 @@
 ---
 - name: Setup dbserver
-  hosts: localhost
+  hosts: dbsrvgrp
   gather_facts: no
   tasks:
     - name: Inporting variables for setting up db
