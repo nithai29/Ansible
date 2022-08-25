@@ -22,7 +22,8 @@
 
     - name: enable remote login to memcached
       lineinfile: 
-        path: '^-l'
+        path: /etc/memcached.conf
+        regex: '^-l '
         line: '-l 0.0.0.0'
         backup: yes
       notify:
