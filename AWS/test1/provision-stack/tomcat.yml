@@ -1,0 +1,184 @@
+---
+# Installing tomcat
+
+- name: Setup Tomcat Application server
+  hosts: localhost
+  gather_facts: no
+
+  vars: 
+    timestamp: "{{ansible_date_time.date}}_{{ansible_date_time.hour}}_{{ansible_date_time.minute}}"
+    tomcat_url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.62/bin/apache-tomcat-9.0.62.tar.gz
+
+  tasks:
+    - name: updating the server 
+      apt:
+        name: '*'
+        state: latest
+        update_cache: yes
+    
+    - name: Installing preq java for tomcat
+      apt:
+        name: openjdk-11-jdk
+        state: present
+        update_cache: yes
+
+    - name: Checking java version
+      command: "java --version"
+      register: java_version
+
+    - debug:
+        var: java_version.stdout_lines
+
+    - name: Adding tomcat group
+      group:
+        name: tomcat
+        state: present
+
+    - name: adding tomcat user
+      user:
+        name: tomcat
+        group: tomcat
+        shell: /bin/nologin
+        home: /usr/local/tomcat9
+    
+    - name: creating a tomcat9 directory
+      file:
+        path: /tmp/tomcat9
+        state: directory
+
+    - name: downloading tomcat tar
+      get_url:
+        url: "{{ tomcat_url }}"
+        dest: /tmp/
+ 
+    - name: untar the downloaded tomcat tar file.
+      unarchive:
+        src: /tmp/apache-tomcat-9.0.62.tar.gz
+        dest: /tmp/tomcat9/
+        remote_src: yes
+        list_files: yes
+      register: tomcat_unarchive_info
+
+    - debug: 
+        msg: "{{tomcat_unarchive_info.files[0].split('/')[0]}}"
+
+    - name: sync /tmp/tomcat9/ with /usr/local/tomcat9.
+      synchornize:
+        src: "/tmp/tomcat9/{{tomcat_unarchive_info.files[0].split('/')[0]}}/"
+        dest: /usr/local/tomcat9/ 
+      delegate_to: "{{ inventory_hostname }}"
+
+    - name: change ownership of /usr/local/tomcat9/.
+      file:
+        path: /usr/local/tomcat9
+        owner: tomcat
+        group: tomcat
+        rescurse: yes
+
+    - name: Setup tomcat SVC file on ubuntu 16 and 18
+      template:
+         src: templates/tomcat9-ubuntu-svcfile.j2
+         dest: /etc/systemd/system/tomcat9.service
+         mode: "a+x"
+    
+    - name: forcing systemd to read configs
+      systemd:
+        daemon_reload: yes
+
+    - name: start and enable tomcat
+      service:
+        name: tomcat9
+        state: started
+        enabled: yes
+      tags:
+        - svc
+
+    - stat:
+        path: /usr/local/tomcat9/webapps/ROOT
+      register: artifact_stat
+      tags:
+        - deploy
+
+    - name: stop tomcat
+      service: 
+        name: tomcat9
+        state: stopped
+      tags:
+        - deploy
+
+    - name: Backup and deploy
+      block:
+        - name: Archive ROOT dir with timestamp
+          archive:
+            path: /usr/local/tomcat9/webapps/ROOT
+            dest: "/opt/ROOT_{{timestamp}}.tgz"
+          when: artifact_stat.stat.exists
+          register: archive_info
+          tags:
+            - deploy
+        
+        - name: copy ROOT dir with old_ROOT name
+          shell: cp -r ROOT old_ROOT
+          args:
+            chdir: /usr/local/tomcat9/webapps/
+
+        - name: Delete current artifact
+          file:
+            path: "{{ item }}"
+            state: absent
+          when: archive_info.changed
+          loop:
+            - /usr/local/tomcat9/webapps/ROOT
+            - /usr/local/tomcat9/webapps/ROOT.war
+          tags:
+            - deploy
+
+        - name: Deploy artifact or else restore Backup
+          block:
+            - name: Deploy application artifact
+              copy:
+                src: files/ROOT.war
+                dest: /usr/local/tomcat9/webapps/ROOT.war
+              register: deploy_info
+              tags:
+                - deploy
+          
+          rescue:
+            - name: restore old Backup
+              shell: cp -r old_ROOT ROOT
+              args:
+                chdir: /usr/local/tomcat9/webapps/
+            
+      rescue:
+        - name: Start tomcat service
+          service:
+            name: tomcat9
+            state: started
+
+    - name: Start tomcat service
+      service:
+        name: tomcat9
+        state: started
+      when: deploy_info.changed
+      tags:
+        - deploy
+
+    - name: wait for ROOT.wr to be extracted
+      wait_for:
+        path: /usr/local/tomcat9/webapps/ROOT
+      tags:
+        - deploy
+
+    - name: Deploy web configuration file
+      template: 
+        src: templates/application.j2
+        dest: /usr/local/tomcat9/webapps/ROOT/WEB-INF/classes/application.properties
+        force: yes
+      notify:
+        - Restart_Tomcat
+
+  handlers:
+    - name: Restart_Tomcat
+      service:
+        name: tomcat9
+        state: restarted
