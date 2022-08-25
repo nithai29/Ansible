@@ -4,8 +4,8 @@
   gather_facts: no
   tasks:
     - name: Inporting variables for setting up db
-      include_vars: group_vars/dbsrvgrp
-      
+      include_vars: group-vars/dbsrvgrp
+
     - name: Installing MYSQL Service and dependencies
       package:
         name: "{{ item }}"
