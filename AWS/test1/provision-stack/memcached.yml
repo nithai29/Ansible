@@ -1,6 +1,6 @@
 --- 
 - name: Setup Memcached service
-  hosts: mcsrvgrp
+  hosts: localhost
   gather_facts: no
   tasks:
     - name: Install Memcached 

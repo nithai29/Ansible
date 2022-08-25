@@ -1,6 +1,6 @@
 ---
 - name: Setup dbserver
-  hosts: dbsrvgrp
+  hosts: localhost
   gather_facts: no
   tasks:
     - name: Installing MYSQL Service and dependencies

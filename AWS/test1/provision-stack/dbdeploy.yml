@@ -1,6 +1,6 @@
 ---
 - name: Deploy SQL file on DB server
-  hosts: dbsrvgrp
+  hosts: localhost
   gather_facts: false
   tasks:
     - name: Copy SQL to dbsrv
