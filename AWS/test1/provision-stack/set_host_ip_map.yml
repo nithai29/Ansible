@@ -17,7 +17,7 @@
           {{mc01_ip}} mc01
           {{db01_ip}} db01
 
-    - name: updateing the servers
+    - name: updating the servers
       apt:
         name: '*'
         state: latest
